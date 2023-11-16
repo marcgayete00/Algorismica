@@ -58,26 +58,27 @@ public class Main {
     }
 
 
-    public static Sabata[] enviamentCaixesForcaBruta( Sabata[] sabatesArray, int ordre, float totalpreu, Sabata[] configuracio){
-
-        if (ordre > 5 ){
-            return configuracio;
-
-        } else {
+    public static void enviamentCaixesForcaBruta(Sabata[] sabatesArray, int ordre, float totalpreu, Sabata[] configuracio) {
+        if (ordre == 6) {
+            // Se ha alcanzado el límite de 6 zapatos en la configuración
             System.out.println("--------------------------------------");
-            for (int i = 0; i < sabatesArray.length; i++){
-                totalpreu = totalpreu + sabatesArray[i].getPreu();
-                configuracio[ordre] = sabatesArray[i];
-                System.out.println(configuracio[ordre].getNom());
-                System.out.println(configuracio[ordre].getPreu());
-                enviamentCaixesForcaBruta(sabatesArray, ordre+1, totalpreu, configuracio);
+            for (int i = 0; i < 6; i++) {
+                System.out.println(configuracio[i].getNom());
+                System.out.println(configuracio[i].getPreu());
             }
-
-
+            System.out.println("Total precio: " + totalpreu);
+            System.out.println("--------------------------------------");
+            return;
         }
-        return null;
-    }
 
+        for (int i = 0; i < sabatesArray.length; i++) {
+            totalpreu += sabatesArray[i].getPreu();
+            configuracio[ordre] = sabatesArray[i];
+
+            enviamentCaixesForcaBruta(sabatesArray, ordre + 1, totalpreu, configuracio);
+            totalpreu -= sabatesArray[i].getPreu(); // Restablecer el totalpreu para la siguiente iteración
+        }
+    }
 
 
     public static void main(String[] args) {
@@ -103,7 +104,7 @@ public class Main {
                     float totalpreu = 0;
                     Sabata[] configuracio = new Sabata[6];
 
-                    Sabata[] solucio = enviamentCaixesForcaBruta(sabatesArray, ordre, totalpreu, configuracio);
+                    enviamentCaixesForcaBruta(sabatesArray, ordre, totalpreu, configuracio);
                     /*
                     for ( int i = 0; i< solucio.length; i++){
                         System.out.println(solucio[i].getNom());
