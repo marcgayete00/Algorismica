@@ -56,11 +56,13 @@ public class Main {
           }
         return null;
     }
-
-
+    
     public static void enviamentCaixesForcaBruta(Sabata[] sabatesArray, int ordre, float totalpreu, Sabata[] configuracio) {
         if (ordre == 6) {
-            // Se ha alcanzado el límite de 6 zapatos en la configuración
+            if (totalpreu > 1000){
+                return;
+            }
+
             System.out.println("--------------------------------------");
             for (int i = 0; i < 6; i++) {
                 System.out.println(configuracio[i].getNom());
@@ -76,7 +78,7 @@ public class Main {
             configuracio[ordre] = sabatesArray[i];
 
             enviamentCaixesForcaBruta(sabatesArray, ordre + 1, totalpreu, configuracio);
-            totalpreu -= sabatesArray[i].getPreu(); // Restablecer el totalpreu para la siguiente iteración
+            totalpreu -= sabatesArray[i].getPreu();
         }
     }
 
