@@ -1,12 +1,12 @@
 11
-Satterfield, Goldner and Orn Mike Raffone;113,59;23;25;2484;3,7
-Thompson, Heller and Will Kent Cook;288,96;24;44;2271;4,5
-Skiles-Rodriguez Rusty Keyes;188,77;20;38;2213;0,6
+Satterfield, Goldner and Orn Mike Raffone;113,59;23;25;2484;5
+Thompson, Heller and Will Kent Cook;288,96;24;44;2271;1
+Skiles-Rodriguez Rusty Keyes;188,77;20;38;2213;3
 Johnson, White and Lee Chris Sole;152,45;22;50;2150;2,2
-Martinez, Turner and Davis Lisa Stride;215,30;25;45;2367;3,9
-Brown, Carter and Hall Brian Sprint;143,68;17;36;1987;0,5
-Davis, Miller and Green Tony Tread;198,22;21;40;2125;1,8
-Baker, Lopez and Young Sandy Step;175,10;19;37;2045;0,9
-Wilson, Adams and Reed Kelly Kick;132,85;18;48;2298;3,1
-Taylor, Wright and Lewis Jordan Jog;261,40;26;42;2315;4,2
-Brown, Carter and Hall Brian Sprint;143,68;17;36;1987;0,5
+Martinez, Turner and Davis Lisa Stride;215,30;25;23;2367;10
+Brown, Carter and Hall Brian Sprint;143,68;17;36;1987;5
+Davis, Miller and Green Tony Tread;198,22;21;40;2125;10
+Baker, Lopez and Young Sandy Step;175,10;19;37;2045;10
+Wilson, Adams and Reed Kelly Kick;132,85;18;48;2298;5
+Taylor, Wright and Lewis Jordan Jog;261,40;26;42;2315;5
+Brown, Carter and Hall Brian Sprint;143,68;17;36;1987;5
