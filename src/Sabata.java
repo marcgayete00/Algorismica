@@ -6,13 +6,16 @@ public class Sabata {
     private int pes;
     private float punctuacio;
 
-    public Sabata(String nom, float preu, int min_talla, int max_talla, int pes, float punctuacio) {
+    private boolean utilitzat = false;
+
+    public Sabata(String nom, float preu, int min_talla, int max_talla, int pes, float punctuacio, boolean utilitzat) {
         this.nom = nom;
         this.preu = preu;
         this.min_talla = min_talla;
         this.max_talla = max_talla;
         this.pes = pes;
         this.punctuacio = punctuacio;
+        this.utilitzat = utilitzat;
     }
 
     public String getNom() {
@@ -39,4 +42,11 @@ public class Sabata {
         return punctuacio;
     }
 
+    public boolean getUtilitzat() {
+        return utilitzat;
+    }
+
+    public void setUtilitzat(boolean utilitzat) {
+        this.utilitzat = utilitzat;
+    }
 }

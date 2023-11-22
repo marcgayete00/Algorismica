@@ -40,7 +40,8 @@ public class Main {
                         Integer.parseInt(parts[2]),
                         Integer.parseInt(parts[3]),
                         Integer.parseInt(parts[4]),
-                        Float.parseFloat(parts[5].replace(",", "."))
+                        Float.parseFloat(parts[5].replace(",", ".")),
+                        false
                 );
 
                 sabatesArray[index] = sabata;
@@ -56,9 +57,48 @@ public class Main {
           }
         return null;
     }
-    
+    private static float CalcularDescomptes(float totalpreu, Sabata[] configuracio) {
+        int [] sabatesNens = {-1,-1,-1,-1,-1,-1};
+
+        //Descompte 20% marca duplicada
+        for (int i = 0; i<configuracio.length; i++){
+            for(int j = 0; j<configuracio.length; j++){
+                if (configuracio[i].getNom().equals(configuracio[j].getNom()) && i != j){
+                    float preuSabata = configuracio[i].getPreu();
+                    float descompte = preuSabata * 0.2f;
+                    /*
+                    System.out.println("Descompte de: " + descompte + " a la sabata: " + configuracio[i].getNom());
+                    System.out.println("Antes TotalPreu"+totalpreu);
+                    totalpreu -= descompte;
+                    System.out.println("Despues TotalPreu"+totalpreu);
+                     */
+                }
+            }
+            if (configuracio[i].getMax_talla() < 35){
+                sabatesNens[i] = i;
+            }
+        }
+
+        //Descompte 35% sabates nens
+        if (sabatesNens.length > 1){
+            float descompte = 0;
+            for (int i = 0; i<sabatesNens.length; i++){
+                if (sabatesNens[i] != -1){
+                    descompte += configuracio[sabatesNens[i]].getPreu() * 0.35f;
+                    System.out.println("Descompte nens de: " + descompte + " a la sabata: " + configuracio[sabatesNens[i]].getNom());
+
+                }
+            }
+            System.out.println("Antes nens TotalPreu"+totalpreu);
+            totalpreu -= descompte;
+            System.out.println("Despues nens TotalPreu"+totalpreu);
+        }
+
+    return totalpreu;
+    }
     public static void enviamentCaixesForcaBruta(Sabata[] sabatesArray, int ordre, float totalpreu, Sabata[] configuracio) {
         if (ordre == 6) {
+            totalpreu = CalcularDescomptes(totalpreu, configuracio);
             if (totalpreu > 1000){
                 return;
             }
@@ -74,13 +114,22 @@ public class Main {
         }
 
         for (int i = 0; i < sabatesArray.length; i++) {
-            totalpreu += sabatesArray[i].getPreu();
-            configuracio[ordre] = sabatesArray[i];
+            if (!sabatesArray[i].getUtilitzat()) {
 
-            enviamentCaixesForcaBruta(sabatesArray, ordre + 1, totalpreu, configuracio);
-            totalpreu -= sabatesArray[i].getPreu();
+                totalpreu += sabatesArray[i].getPreu();
+                configuracio[ordre] = sabatesArray[i];
+
+                sabatesArray[i].setUtilitzat(true);
+
+
+                enviamentCaixesForcaBruta(sabatesArray, ordre + 1, totalpreu, configuracio);
+                totalpreu -= sabatesArray[i].getPreu();
+                sabatesArray[i].setUtilitzat(false);
+            }
         }
     }
+
+
 
 
     public static void main(String[] args) {
@@ -107,11 +156,6 @@ public class Main {
                     Sabata[] configuracio = new Sabata[6];
 
                     enviamentCaixesForcaBruta(sabatesArray, ordre, totalpreu, configuracio);
-                    /*
-                    for ( int i = 0; i< solucio.length; i++){
-                        System.out.println(solucio[i].getNom());
-                        System.out.println(solucio[i].getPreu());
-                    }*/
 
                     break;
                 case 2:
