@@ -8,7 +8,9 @@ public class Sabata {
 
     private boolean utilitzat = false;
 
-    public Sabata(String nom, float preu, int min_talla, int max_talla, int pes, float puntuacio, boolean utilitzat) {
+    private boolean descomptat = false;
+
+    public Sabata(String nom, float preu, int min_talla, int max_talla, int pes, float puntuacio, boolean utilitzat, boolean descomptat) {
         this.nom = nom;
         this.preu = preu;
         this.min_talla = min_talla;
@@ -16,6 +18,7 @@ public class Sabata {
         this.pes = pes;
         this.puntuacio = puntuacio;
         this.utilitzat = utilitzat;
+        this.descomptat = descomptat;
     }
 
     public String getNom() {
@@ -46,7 +49,15 @@ public class Sabata {
         return utilitzat;
     }
 
+    public boolean getDescomptat() {
+        return descomptat;
+    }
+
     public void setUtilitzat(boolean utilitzat) {
         this.utilitzat = utilitzat;
+    }
+
+    public void setDescomptat(boolean descomptat) {
+        this.descomptat = descomptat;
     }
 }
