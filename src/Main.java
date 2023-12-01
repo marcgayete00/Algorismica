@@ -26,7 +26,7 @@ public class Main {
 
     public static Sabata[] lecturaFitxer(){
         try {
-            File myObj = new File("sabates.txt");
+            File myObj = new File("Datasets/datasetM.txt");
             Scanner myReader = new Scanner(myObj);
 
             int Nsabates = Integer.parseInt(myReader.nextLine());
@@ -37,9 +37,9 @@ public class Main {
             while (myReader.hasNextLine()) {
                 String data = myReader.nextLine();
                 String[] parts = data.split(";");
-
+                String[] parts2 = parts[0].split(" ");
                 Sabata sabata = new Sabata(
-                        parts[0],
+                        parts2[0],
                         Float.parseFloat(parts[1].replace(",", ".")),
                         Integer.parseInt(parts[2]),
                         Integer.parseInt(parts[3]),
@@ -68,30 +68,34 @@ public class Main {
         ArrayList<Integer> sabatesPuntSuperior = new ArrayList<Integer>();
         //Descompte 20% marca duplicada
         for (int i = 0; i<configuracio.length; i++){
-            for(int j = 0; j<configuracio.length; j++){
-                if (configuracio[i].getNom().equals(configuracio[j].getNom()) && i != j){
-                    float preuSabata = configuracio[i].getPreu();
-                    float descompte = preuSabata * 0.2f;
+            if(configuracio[i] != null){
+                for(int j = 0; j<configuracio.length; j++){
+                    if(configuracio[j] != null){
+                        if (configuracio[i].getNom().equals(configuracio[j].getNom()) && configuracio[i].getDescomptat() && i != j){
+                            float preuSabata = configuracio[i].getPreu();
+                            float descompte = preuSabata * 0.2f;
 
-                    System.out.println("Descompte de: " + descompte + " a la sabata: " + configuracio[i].getNom());
-                    System.out.println("Antes TotalPreu"+totalpreu);
-                    totalpreu -= descompte;
-                    System.out.println("Despues TotalPreu"+totalpreu);
+                            System.out.println("Descompte de: " + descompte + " a la sabata: " + configuracio[i].getNom());
+                            System.out.println("Antes TotalPreu"+totalpreu);
+                            totalpreu -= descompte;
+                            System.out.println("Despues TotalPreu"+totalpreu);
+                        }
+                    }
+                }
 
+                if (configuracio[i].getMax_talla() < 35){
+                    sabatesNens.add(i);
+                }
+
+                if (configuracio[i].getPuntuacio() < 5){
+                    sabatesPuntInferior.add(i);
+                }
+
+                if (configuracio[i].getPuntuacio() > 8){
+                    sabatesPuntSuperior.add(i);
                 }
             }
 
-            if (configuracio[i].getMax_talla() < 35){
-                sabatesNens.add(i);
-            }
-
-            if (configuracio[i].getPuntuacio() < 5){
-                sabatesPuntInferior.add(i);
-            }
-
-            if (configuracio[i].getPuntuacio() > 8){
-                sabatesPuntSuperior.add(i);
-            }
         }
 
         //Descompte 35% sabates nens
@@ -227,37 +231,48 @@ public class Main {
         return totalpreu;
 
     }
-    public static void enviamentCaixesForcaBruta(Sabata[] sabatesArray, int ordre, float totalpreu, Sabata[] configuracio) {
-        if (ordre == 6) {
+    public static void enviamentCaixesForcaBruta(Sabata[] sabatesArray, int ordre, float totalpreu, Sabata[] configuracio, int inicio) {
+        int globalinicio = inicio;
+        if (ordre == 6 || inicio == sabatesArray.length) {
             totalpreu = CalcularDescomptes(totalpreu, configuracio);
             if (totalpreu > 1000){
+                enviamentCaixesForcaBruta(sabatesArray, ordre-1, totalpreu, configuracio,inicio+1);
                 return;
             }
             cajastotales++;
             System.out.println("--------------------------------------");
-            for (int i = 0; i < 6; i++) {
+            for (int i = 0; i < ordre; i++) {
                 System.out.println(configuracio[i].getNom());
                 System.out.println(configuracio[i].getPreu());
             }
             System.out.println("Total precio: " + totalpreu);
             System.out.println("--------------------------------------");
+            if(inicio != sabatesArray.length){
+                configuracio = new Sabata[6];
+                enviamentCaixesForcaBruta(sabatesArray, 0, 0, configuracio,globalinicio);
+            }
             return;
         }
-        for (int i = inicio; i < inicio+6; i++) {
-            if (!sabatesArray[i].getUtilitzat()) {
-
-                totalpreu += sabatesArray[i].getPreu();
-                configuracio[ordre] = sabatesArray[i];
-
-                sabatesArray[i].setUtilitzat(true);
-
+            if (!sabatesArray[inicio].getUtilitzat()) {
+                totalpreu += sabatesArray[inicio].getPreu();
+                configuracio[ordre] = sabatesArray[inicio];
+                sabatesArray[inicio].setUtilitzat(true);
                 nIteracions++;
-                enviamentCaixesForcaBruta(sabatesArray, ordre + 1, totalpreu, configuracio);
-                totalpreu -= sabatesArray[i].getPreu();
-                sabatesArray[i].setUtilitzat(false);
+                enviamentCaixesForcaBruta(sabatesArray, ordre + 1, totalpreu, configuracio,inicio+1);
+                totalpreu -= sabatesArray[inicio].getPreu();
+                sabatesArray[inicio].setUtilitzat(false);
             }
-        }
     }
+
+    /*funcion fuerzabruta(){
+        int t[N] = Primeraconfiguracion();
+        while(configuracionvalida(t)){
+            if(solucion(t)){
+                mostrar(t);
+            }
+            t = siguienteconfiguracion(t);
+        }
+    }*/
 
     private static void enviamentCaixesBacktracking(Sabata[] sabatesArray, int ordre, float totalpreu, Sabata[] configuracio) {
 
@@ -327,7 +342,7 @@ public class Main {
 
                                 configuracio = new Sabata[6];
 
-                                enviamentCaixesForcaBruta(sabatesArray, 0, 0, configuracio);
+                                enviamentCaixesForcaBruta(sabatesArray, 0, 0, configuracio, 0);
                                 System.out.println("Numero iteracions: " + nIteracions);
                                 System.out.println("Numero cajas: " + cajastotales);
                                 nIteracions = 0;
@@ -339,6 +354,8 @@ public class Main {
                                 configuracio = new Sabata[6];
                                 enviamentCaixesBacktracking(sabatesArray, 0, 0, configuracio);
                                 System.out.println("Numero iteracions: " + nIteracions);
+                                System.out.println("Numero cajas: " + cajastotales);
+
                                 nIteracions = 0;
                                 break;
                             case 3:
