@@ -8,6 +8,8 @@ import java.io.File;
 public class Main {
     static int nIteracions;
 
+    static int cajastotales = 0;
+
     public static void mostrarDades(Sabata[] sabatesArray){
         for (int i = 0; i<sabatesArray.length; i++) {
             System.out.println("Nom: "+sabatesArray[i].getNom());
@@ -54,125 +56,44 @@ public class Main {
             //mostrarDades( sabatesArray);
             return sabatesArray;
 
-          } catch (FileNotFoundException e) {
+        } catch (FileNotFoundException e) {
             System.out.println("An error occurred.");
             e.printStackTrace();
-          }
+        }
         return null;
     }
     private static float CalcularDescomptes(float totalpreu, Sabata[] configuracio) {
         ArrayList<Integer> sabatesNens = new ArrayList<Integer>();
         ArrayList<Integer> sabatesPuntInferior = new ArrayList<Integer>();
         ArrayList<Integer> sabatesPuntSuperior = new ArrayList<Integer>();
-            //Descompte 20% marca duplicada
-            for (int i = 0; i<configuracio.length; i++){
-                for(int j = 0; j<configuracio.length; j++){
-                    if (configuracio[i].getNom().equals(configuracio[j].getNom()) && i != j){
-                        float preuSabata = configuracio[i].getPreu();
-                        float descompte = preuSabata * 0.2f;
-
-                        System.out.println("Descompte de: " + descompte + " a la sabata: " + configuracio[i].getNom());
-                        System.out.println("Antes TotalPreu"+totalpreu);
-                        totalpreu -= descompte;
-                        System.out.println("Despues TotalPreu"+totalpreu);
-
-                    }
-                }
-                if (configuracio[i].getMax_talla() < 35){
-                    sabatesNens.add(i);
-                }
-
-                if (configuracio[i].getPuntuacio() < 5){
-                    sabatesPuntInferior.add(i);
-                }
-
-                if (configuracio[i].getPuntuacio() > 8){
-                    sabatesPuntSuperior.add(i);
-                }
-            }
-
-            //Descompte 35% sabates nens
-            if (sabatesNens.size() > 1){
-                float descompte = 0;
-                for (int i = 0; i<sabatesNens.size(); i++){
-                    if (sabatesNens.get(i) != -1){
-                        descompte += configuracio[sabatesNens.get(i)].getPreu() * 0.35f;
-                        System.out.println("Descompte nens de: " + descompte + " a la sabata: " + configuracio[sabatesNens.get(i)].getNom());
-
-                    }
-                }
-                System.out.println("Antes nens TotalPreu"+totalpreu);
-                totalpreu -= descompte;
-                System.out.println("Despues nens TotalPreu"+totalpreu);
-            }
-
-            //3 sabates puntuacio menor a 5 40%
-            if (sabatesPuntInferior.size() > 2){
-                float descompte = 0;
-
-                for (int i = 0; i<sabatesPuntInferior.size(); i++){
-                    if (sabatesPuntInferior.get(i) != -1){
-                        descompte += configuracio[sabatesPuntInferior.get(i)].getPreu() * 0.4f;
-                        System.out.println("Descompte puntuacio de: " + descompte + " a la sabata: " + configuracio[sabatesPuntInferior.get(i)].getNom());
-                    }
-
-                }
-                System.out.println("Antes puntuacio TotalPreu"+totalpreu);
-                totalpreu -= descompte;
-                System.out.println("Despues puntuacio TotalPreu"+totalpreu);
-            }
-
-            //3 sabates puntuacio major a 8 20%
-            if (sabatesPuntSuperior.size() > 2){
-                float descompte = 0;
-
-                for (int i = 0; i<sabatesPuntSuperior.size(); i++){
-                    if (sabatesPuntSuperior.get(i) != -1){
-                        descompte += configuracio[sabatesPuntSuperior.get(i)].getPreu() * 0.2f;
-                        System.out.println("Descompte puntuacio de: " + descompte + " a la sabata: " + configuracio[sabatesPuntSuperior.get(i)].getNom());
-                    }
-
-                }
-                System.out.println("Antes puntuacio TotalPreu"+totalpreu);
-                totalpreu -= descompte;
-                System.out.println("Despues puntuacio TotalPreu"+totalpreu);
-            }
-    return totalpreu;
-    }
-
-    private static float CalcularDescomptesBacktracking(float totalpreu, Sabata[] configuracio) {
-        ArrayList<Integer> sabatesNens = new ArrayList<Integer>();
-        ArrayList<Integer> sabatesPuntInferior = new ArrayList<Integer>();
-        ArrayList<Integer> sabatesPuntSuperior = new ArrayList<Integer>();
         //Descompte 20% marca duplicada
         for (int i = 0; i<configuracio.length; i++){
-            if(configuracio[i] != null) {
-                for (int j = 0; j < configuracio.length; j++) {
-                    if (configuracio[j] != null && configuracio[i].getNom().equals(configuracio[j].getNom()) && i != j && !configuracio[i].getDescomptat() && !configuracio[j].getDescomptat()) {
-                        float preuSabata = configuracio[i].getPreu();
-                        float descompte = preuSabata * 0.2f;
-                        configuracio[i].setDescomptat(true);
-                        configuracio[j].setDescomptat(true);
-                        System.out.println("Descompte de: " + descompte + " a la sabata: " + configuracio[i].getNom());
-                        System.out.println("Antes TotalPreu" + totalpreu);
-                        totalpreu -= descompte;
-                        System.out.println("Despues TotalPreu" + totalpreu);
-                    }
-                    /*if (configuracio[i].getMax_talla() < 35) {
-                        sabatesNens.add(i);
-                    }
+            for(int j = 0; j<configuracio.length; j++){
+                if (configuracio[i].getNom().equals(configuracio[j].getNom()) && i != j){
+                    float preuSabata = configuracio[i].getPreu();
+                    float descompte = preuSabata * 0.2f;
 
-                    if (configuracio[i].getPuntuacio() < 5) {
-                        sabatesPuntInferior.add(i);
-                    }
+                    System.out.println("Descompte de: " + descompte + " a la sabata: " + configuracio[i].getNom());
+                    System.out.println("Antes TotalPreu"+totalpreu);
+                    totalpreu -= descompte;
+                    System.out.println("Despues TotalPreu"+totalpreu);
 
-                    if (configuracio[i].getPuntuacio() > 8) {
-                        sabatesPuntSuperior.add(i);
-                    }*/
                 }
             }
+
+            if (configuracio[i].getMax_talla() < 35){
+                sabatesNens.add(i);
+            }
+
+            if (configuracio[i].getPuntuacio() < 5){
+                sabatesPuntInferior.add(i);
+            }
+
+            if (configuracio[i].getPuntuacio() > 8){
+                sabatesPuntSuperior.add(i);
+            }
         }
-        /*
+
         //Descompte 35% sabates nens
         if (sabatesNens.size() > 1){
             float descompte = 0;
@@ -218,18 +139,101 @@ public class Main {
             System.out.println("Antes puntuacio TotalPreu"+totalpreu);
             totalpreu -= descompte;
             System.out.println("Despues puntuacio TotalPreu"+totalpreu);
+        }
+        return totalpreu;
+    }
+
+    private static float CalcularDescomptesBacktracking(float totalpreu, Sabata[] configuracio) {
+        ArrayList<Integer> sabatesNens = new ArrayList<Integer>();
+        ArrayList<Integer> sabatesPuntInferior = new ArrayList<Integer>();
+        ArrayList<Integer> sabatesPuntSuperior = new ArrayList<Integer>();
+
+        //Descompte 20% marca duplicada
+        for (int i = 0; i < configuracio.length; i++) {
+            for (int j = i + 1; j < configuracio.length; j++) {
+
+                if (configuracio[j] != null && configuracio[i].getNom().equals(configuracio[j].getNom()) && !configuracio[i].getDescomptat() && !configuracio[j].getDescomptat()) {
+                    float preuSabata = configuracio[i].getPreu();
+                    float descompte = preuSabata * 0.2f;
+
+                    configuracio[i].setDescomptat(true);
+                    configuracio[j].setDescomptat(true);
+
+                    System.out.println("Descompte de: " + descompte + " a la sabata: " + configuracio[i].getNom());
+                    System.out.println("Antes TotalPreu" + totalpreu);
+                    //totalpreu -= descompte;
+                    System.out.println("Despues TotalPreu" + totalpreu);
+                }
+            }
+
+            if (configuracio[i] != null && !configuracio[i].getDescomptat()) {
+                if (configuracio[i].getMax_talla() < 35) {
+                    sabatesNens.add(i);
+                }
+            }
+        }
+        /*
+        if (sabatesNens.size() > 1){
+            float descompte = 0;
+            for (int i = 0; i<sabatesNens.size(); i++){
+                if (sabatesNens.get(i) != -1){
+                    descompte += configuracio[sabatesNens.get(i)].getPreu() * 0.35f;
+                    System.out.println("Descompte nens de: " + descompte + " a la sabata: " + configuracio[sabatesNens.get(i)].getNom());
+                    totalpreu -= descompte;
+                    descompte = 0;
+                }
+            }
+            //System.out.println("Antes nens TotalPreu"+totalpreu);
+            //System.out.println("Despues nens TotalPreu"+totalpreu);
+        }
+
+         */
+
+
+        /*
+
+        //3 sabates puntuacio menor a 5 40%
+        if (sabatesPuntInferior.size() > 2){
+            float descompte = 0;
+
+            for (int i = 0; i<sabatesPuntInferior.size(); i++){
+                if (sabatesPuntInferior.get(i) != -1){
+                    descompte += configuracio[sabatesPuntInferior.get(i)].getPreu() * 0.4f;
+                    System.out.println("Descompte puntuacio de: " + descompte + " a la sabata: " + configuracio[sabatesPuntInferior.get(i)].getNom());
+                }
+
+            }
+            System.out.println("Antes puntuacio TotalPreu"+totalpreu);
+            totalpreu -= descompte;
+            System.out.println("Despues puntuacio TotalPreu"+totalpreu);
+        }
+
+        //3 sabates puntuacio major a 8 20%
+        if (sabatesPuntSuperior.size() > 2){
+            float descompte = 0;
+
+            for (int i = 0; i<sabatesPuntSuperior.size(); i++){
+                if (sabatesPuntSuperior.get(i) != -1){
+                    descompte += configuracio[sabatesPuntSuperior.get(i)].getPreu() * 0.2f;
+                    System.out.println("Descompte puntuacio de: " + descompte + " a la sabata: " + configuracio[sabatesPuntSuperior.get(i)].getNom());
+                }
+
+            }
+            System.out.println("Antes puntuacio TotalPreu"+totalpreu);
+            totalpreu -= descompte;
+            System.out.println("Despues puntuacio TotalPreu"+totalpreu);
         }*/
+
         return totalpreu;
 
     }
     public static void enviamentCaixesForcaBruta(Sabata[] sabatesArray, int ordre, float totalpreu, Sabata[] configuracio) {
         if (ordre == 6) {
-
             totalpreu = CalcularDescomptes(totalpreu, configuracio);
             if (totalpreu > 1000){
                 return;
             }
-
+            cajastotales++;
             System.out.println("--------------------------------------");
             for (int i = 0; i < 6; i++) {
                 System.out.println(configuracio[i].getNom());
@@ -239,7 +243,7 @@ public class Main {
             System.out.println("--------------------------------------");
             return;
         }
-        for (int i = 0; i < sabatesArray.length; i++) {
+        for (int i = inicio; i < inicio+6; i++) {
             if (!sabatesArray[i].getUtilitzat()) {
 
                 totalpreu += sabatesArray[i].getPreu();
@@ -260,6 +264,7 @@ public class Main {
         if (ordre == 6) {
             System.out.println("--------------------------------------");
             for (int i = 0; i < 6; i++) {
+                configuracio[i].setDescomptat(false);
                 System.out.println(configuracio[i].getNom());
                 System.out.println(configuracio[i].getPreu());
             }
@@ -324,7 +329,9 @@ public class Main {
 
                                 enviamentCaixesForcaBruta(sabatesArray, 0, 0, configuracio);
                                 System.out.println("Numero iteracions: " + nIteracions);
+                                System.out.println("Numero cajas: " + cajastotales);
                                 nIteracions = 0;
+                                cajastotales = 0;
 
                                 break;
                             case 2:
