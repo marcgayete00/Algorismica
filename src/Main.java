@@ -7,7 +7,8 @@ import java.io.File;
 // then press Enter. You can now see whitespace characters in your code.
 public class Main {
     static int nIteracions;
-
+    static int nSabatesContar = 0;
+    static int nSabatesFitxer = 0;
     static int cajastotales = 0;
 
     public static void mostrarDades(Sabata[] sabatesArray){
@@ -29,9 +30,9 @@ public class Main {
             File myObj = new File("Datasets/datasetM.txt");
             Scanner myReader = new Scanner(myObj);
 
-            int Nsabates = Integer.parseInt(myReader.nextLine());
+            nSabatesFitxer = Integer.parseInt(myReader.nextLine());
 
-            Sabata[] sabatesArray = new Sabata[Nsabates];
+            Sabata[] sabatesArray = new Sabata[nSabatesFitxer];
             int index = 0;
 
             while (myReader.hasNextLine()) {
@@ -232,35 +233,36 @@ public class Main {
 
     }
     public static void enviamentCaixesForcaBruta(Sabata[] sabatesArray, int ordre, float totalpreu, Sabata[] configuracio, int inicio) {
-        int globalinicio = inicio;
+
         if (ordre == 6 || inicio == sabatesArray.length) {
             totalpreu = CalcularDescomptes(totalpreu, configuracio);
-            if (totalpreu > 1000){
-                enviamentCaixesForcaBruta(sabatesArray, ordre-1, totalpreu, configuracio,inicio+1);
-                return;
-            }
-            cajastotales++;
-            System.out.println("--------------------------------------");
-            for (int i = 0; i < ordre; i++) {
-                System.out.println(configuracio[i].getNom());
-                System.out.println(configuracio[i].getPreu());
-            }
-            System.out.println("Total precio: " + totalpreu);
-            System.out.println("--------------------------------------");
-            if(inicio != sabatesArray.length){
+
+            mostrarDades( configuracio, totalpreu, ordre);
+            //System.out.println("Numero inicio: " + inicio + " sabates: " + sabatesArray.length);
+            if (nSabatesContar != nSabatesFitxer) {
                 configuracio = new Sabata[6];
-                enviamentCaixesForcaBruta(sabatesArray, 0, 0, configuracio,globalinicio);
+                enviamentCaixesForcaBruta(sabatesArray, 0, 0, configuracio, 0); //Empezar desde el inicio
             }
             return;
         }
             if (!sabatesArray[inicio].getUtilitzat()) {
                 totalpreu += sabatesArray[inicio].getPreu();
-                configuracio[ordre] = sabatesArray[inicio];
-                sabatesArray[inicio].setUtilitzat(true);
-                nIteracions++;
+
+                if (totalpreu < 1000){                                  //Problema anterior que aunque quitases un zapato superaba los 1000
+                    configuracio[ordre] = sabatesArray[inicio];
+                    nSabatesContar++;
+                    sabatesArray[inicio].setUtilitzat(true);
+                    nIteracions++;
+                } else{
+                    totalpreu -= sabatesArray[inicio].getPreu();
+                    ordre--;
+                }
+
                 enviamentCaixesForcaBruta(sabatesArray, ordre + 1, totalpreu, configuracio,inicio+1);
                 totalpreu -= sabatesArray[inicio].getPreu();
                 sabatesArray[inicio].setUtilitzat(false);
+            } else{
+                enviamentCaixesForcaBruta(sabatesArray, ordre, totalpreu, configuracio,inicio+1);
             }
     }
 
@@ -274,35 +276,29 @@ public class Main {
         }
     }*/
 
-    private static void enviamentCaixesBacktracking(Sabata[] sabatesArray, int ordre, float totalpreu, Sabata[] configuracio) {
-
-        if (ordre == 6) {
-            System.out.println("--------------------------------------");
-            for (int i = 0; i < 6; i++) {
-                configuracio[i].setDescomptat(false);
-                System.out.println(configuracio[i].getNom());
-                System.out.println(configuracio[i].getPreu());
-            }
-            System.out.println("Total precio: " + totalpreu);
-            System.out.println("--------------------------------------");
-            return;
+    private static void mostrarDades(Sabata configuracio[], float totalpreu, int ordre){
+        cajastotales++;
+        System.out.println("--------------------------------------");
+        for (int i = 0; i < ordre; i++) {
+            System.out.println(configuracio[i].getNom());
+            System.out.println(configuracio[i].getPreu());
         }
+        System.out.println("Total precio: " + totalpreu);
+        System.out.println("Numero cajas: " + cajastotales);
+        System.out.println("--------------------------------------");
+    }
+
+    private static void enviamentCaixesBacktracking(Sabata[] sabatesArray, int ordre, float totalpreu, Sabata[] configuracio) {
+        ArrayList<Integer> sabatesNens = new ArrayList<Integer>();
 
         for (int i = 0; i < sabatesArray.length; i++) {
-            if (!sabatesArray[i].getUtilitzat()) {
-                totalpreu += sabatesArray[i].getPreu();
-                configuracio[ordre] = sabatesArray[i];
-                totalpreu = CalcularDescomptesBacktracking(totalpreu, configuracio);
-                if(totalpreu >= 1000){
-                    return;
-                }
-                sabatesArray[i].setUtilitzat(true);
-                nIteracions++;
-                enviamentCaixesBacktracking(sabatesArray, ordre + 1, totalpreu, configuracio);
-                totalpreu -= sabatesArray[i].getPreu();
-                sabatesArray[i].setUtilitzat(false);
+            if (sabatesArray[i].getMax_talla() < 35) {
+                sabatesNens.add(i);
             }
         }
+
+        //Vaig començar a intentar classificar les sabates i despues distribuirles en caixes
+
     }
 
 
