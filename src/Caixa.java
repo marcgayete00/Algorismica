@@ -1,25 +1,40 @@
+import java.util.ArrayList;
+
 public class Caixa {
-    private double pes;
-    private double preu;
-    private Sabata[] sabates;
 
-    public Caixa(double pes, double preu, Sabata[] sabates) {
-        this.pes = pes;
-        this.preu = preu;
-        this.sabates = sabates;
+    private ArrayList<Sabata> Sabates;
+
+    private int Pes;
+
+    private float Preu;
+
+    public Caixa(int Pes, float Preu) {
+        this.Sabates = new ArrayList<Sabata>();
+        this.Pes = Pes;
+        this.Preu = Preu;
     }
 
-    public double getPes() {
-        return pes;
+    public ArrayList<Sabata> getSabates() {
+        return Sabates;
     }
 
-    public double getPreu() {
-        return preu;
+    public int getPes() {
+        return Pes;
     }
 
-    public Sabata[] getSabates() {
-        return sabates;
+    public float getPreu() {
+        return Preu;
     }
 
+    public void setSabates(Sabata Sabata) {
+        this.Sabates.add(Sabata);
+    }
 
+    public void setPes(int Pes) {
+        this.Pes = Pes;
+    }
+
+    public void setPreu(float Preu) {
+        this.Preu = Preu;
+    }
 }

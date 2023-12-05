@@ -29,7 +29,7 @@ public class Main {
 
     public static Sabata[] lecturaFitxer(){
         try {
-            File myObj = new File("Datasets/datasetL.txt");
+            File myObj = new File("Datasets/datasetXXS.txt");
             Scanner myReader = new Scanner(myObj);
 
             nSabatesFitxer = Integer.parseInt(myReader.nextLine());
@@ -49,7 +49,7 @@ public class Main {
                         Integer.parseInt(parts[4]),
                         Float.parseFloat(parts[5].replace(",", ".")),
                         false,
-                        false
+                        0
                 );
 
                 sabatesArray[index] = sabata;
@@ -65,18 +65,6 @@ public class Main {
         }
         return null;
     }
-
-    private static void mostrarDades(Sabata configuracio[], float totalpreu){
-        cajastotales++;
-        System.out.println("--------------------------------------");
-        for (int i = 0; i < 6; i++) {
-            System.out.println(configuracio[i].getNom());
-            System.out.println(configuracio[i].getPreu());
-        }
-        System.out.println("Total precio: " + totalpreu);
-        System.out.println("--------------------------------------");
-    }
-
     private static float CalcularDescomptes(float totalpreu, Sabata[] configuracio) {
         ArrayList<Integer> sabatesNens = new ArrayList<Integer>();
         ArrayList<Integer> sabatesPuntInferior = new ArrayList<Integer>();
@@ -116,8 +104,8 @@ public class Main {
         if (sabatesNens.size() > 1){
             float descompte = 0;
             for (int i = 0; i<sabatesNens.size(); i++){
-                    descompte += configuracio[sabatesNens.get(i)].getPreu() * 0.35f;
-                    //System.out.println("Descompte nens de: " + descompte + " a la sabata: " + configuracio[sabatesNens.get(i)].getNom());
+                descompte += configuracio[sabatesNens.get(i)].getPreu() * 0.35f;
+                //System.out.println("Descompte nens de: " + descompte + " a la sabata: " + configuracio[sabatesNens.get(i)].getNom());
             }
             System.out.println("Antes nens TotalPreu"+totalpreu);
             totalpreu -= descompte;
@@ -130,8 +118,8 @@ public class Main {
             float descompte = 0;
 
             for (int i = 0; i<sabatesPuntInferior.size(); i++){
-                    descompte += configuracio[sabatesPuntInferior.get(i)].getPreu() * 0.4f;
-                    //System.out.println("Descompte puntuacio inferior  de: " + descompte + " a la sabata: " + configuracio[sabatesPuntInferior.get(i)].getNom());
+                descompte += configuracio[sabatesPuntInferior.get(i)].getPreu() * 0.4f;
+                //System.out.println("Descompte puntuacio inferior  de: " + descompte + " a la sabata: " + configuracio[sabatesPuntInferior.get(i)].getNom());
             }
             System.out.println("Antes puntuacio inf TotalPreu"+totalpreu);
             totalpreu -= descompte;
@@ -143,8 +131,8 @@ public class Main {
             float descompte = 0;
 
             for (int i = 0; i<sabatesPuntSuperior.size(); i++){
-                    descompte += configuracio[sabatesPuntSuperior.get(i)].getPreu() * 0.2f;
-                    System.out.println("Descompte puntuacio superior de: " + descompte + " a la sabata: " + configuracio[sabatesPuntSuperior.get(i)].getNom());
+                descompte += configuracio[sabatesPuntSuperior.get(i)].getPreu() * 0.2f;
+                System.out.println("Descompte puntuacio superior de: " + descompte + " a la sabata: " + configuracio[sabatesPuntSuperior.get(i)].getNom());
             }
             System.out.println("Antes puntuacio sup TotalPreu"+totalpreu);
             totalpreu -= descompte;
@@ -153,31 +141,234 @@ public class Main {
         return totalpreu;
     }
 
-    //Enviament caixes algoritmes
-    public static void enviamentCaixesForcaBruta(Sabata[] sabatesArray, int ordre, float totalpreu, ArrayList<Sabata> configuracio, ArrayList<Caixa> caixes) {
 
-        if (ordre == 6) {
-            //totalpreu = CalcularDescomptes(totalpreu, configuracio);
-            if (totalpreu > 1000){
-                return;
+    /*private static float CalcularDescomptesBacktracking(float totalpreu, Sabata[] configuracio) {
+        ArrayList<Integer> sabatesNens = new ArrayList<Integer>();
+        ArrayList<Integer> sabatesPuntInferior = new ArrayList<Integer>();
+        ArrayList<Integer> sabatesPuntSuperior = new ArrayList<Integer>();
+
+        //Descompte 20% marca duplicada
+        for (int i = 0; i < configuracio.length; i++) {
+            for (int j = i + 1; j < configuracio.length; j++) {
+
+                if (configuracio[j] != null && configuracio[i].getNom().equals(configuracio[j].getNom()) && !configuracio[i].getDescomptat() && !configuracio[j].getDescomptat()) {
+                    float preuSabata = configuracio[i].getPreu();
+                    float descompte = preuSabata * 0.2f;
+
+                    configuracio[i].setDescomptat(true);
+                    configuracio[j].setDescomptat(true);
+
+                    System.out.println("Descompte de: " + descompte + " a la sabata: " + configuracio[i].getNom());
+                    System.out.println("Antes TotalPreu" + totalpreu);
+                    //totalpreu -= descompte;
+                    System.out.println("Despues TotalPreu" + totalpreu);
+                }
             }
-            cajastotales++;
-            caixes.add(new Caixa(0, totalpreu, configuracio.toArray(new Sabata[configuracio.size()])));
-            return;
+
+            if (configuracio[i] != null && !configuracio[i].getDescomptat()) {
+                if (configuracio[i].getMax_talla() < 35) {
+                    sabatesNens.add(i);
+                }
+            }
+        }
+        if (sabatesNens.size() > 1){
+            float descompte = 0;
+            for (int i = 0; i<sabatesNens.size(); i++){
+                if (sabatesNens.get(i) != -1){
+                    descompte += configuracio[sabatesNens.get(i)].getPreu() * 0.35f;
+                    System.out.println("Descompte nens de: " + descompte + " a la sabata: " + configuracio[sabatesNens.get(i)].getNom());
+                    totalpreu -= descompte;
+                    descompte = 0;
+                }
+            }
+            //System.out.println("Antes nens TotalPreu"+totalpreu);
+            //System.out.println("Despues nens TotalPreu"+totalpreu);
         }
 
-        for (int i = 0; i < sabatesArray.length; i++) {
-            totalpreu += sabatesArray[i].getPreu();
-            configuracio.add(sabatesArray[i]);
+        //3 sabates puntuacio menor a 5 40%
+        if (sabatesPuntInferior.size() > 2){
+            float descompte = 0;
 
+            for (int i = 0; i<sabatesPuntInferior.size(); i++){
+                if (sabatesPuntInferior.get(i) != -1){
+                    descompte += configuracio[sabatesPuntInferior.get(i)].getPreu() * 0.4f;
+                    System.out.println("Descompte puntuacio de: " + descompte + " a la sabata: " + configuracio[sabatesPuntInferior.get(i)].getNom());
+                }
+
+            }
+            System.out.println("Antes puntuacio TotalPreu"+totalpreu);
+            totalpreu -= descompte;
+            System.out.println("Despues puntuacio TotalPreu"+totalpreu);
+        }
+
+        //3 sabates puntuacio major a 8 20%
+        if (sabatesPuntSuperior.size() > 2){
+            float descompte = 0;
+
+            for (int i = 0; i<sabatesPuntSuperior.size(); i++){
+                if (sabatesPuntSuperior.get(i) != -1){
+                    descompte += configuracio[sabatesPuntSuperior.get(i)].getPreu() * 0.2f;
+                    System.out.println("Descompte puntuacio de: " + descompte + " a la sabata: " + configuracio[sabatesPuntSuperior.get(i)].getNom());
+                }
+
+            }
+            System.out.println("Antes puntuacio TotalPreu"+totalpreu);
+            totalpreu -= descompte;
+            System.out.println("Despues puntuacio TotalPreu"+totalpreu);
+        }
+
+        return totalpreu;
+
+    }*/
+    public static void enviamentCaixesForcaBruta(Sabata[] sabatesArray, int ordre,ArrayList<Caixa> configuracio, int flag, int indice) {
+        if (ordre == sabatesArray.length) {
+            mostrarDades(configuracio);
+            return;
+        }
+        System.out.println("Ordre: " + ordre);
+        for (int i = 0; i <= ordre; i++) {
+            if (flag == 0) {
+                configuracio.get(i).setSabates(sabatesArray[ordre]);
+                configuracio.get(i).setPreu((configuracio.get(i).getPreu() + sabatesArray[ordre].getPreu()));
+                flag = 1;
+            } else {
+                configuracio.add(new Caixa(0, 0));
+                configuracio.get(i).setSabates(sabatesArray[ordre]);
+                configuracio.get(i).setPreu((configuracio.get(i).getPreu() + sabatesArray[ordre].getPreu()));
+                flag = 0;
+
+            }
+            //totalpreu = CalcularDescomptes(totalpreu, configuracio);
+        /*if (configuracio.get(i).getPreu() > 1000){
+            return;
+        }*/
             nIteracions++;
-            enviamentCaixesForcaBruta(sabatesArray, ordre + 1, totalpreu, configuracio, caixes);
-            totalpreu -= sabatesArray[i].getPreu();
-            configuracio.remove(sabatesArray[i]);
+            enviamentCaixesForcaBruta(sabatesArray, ordre + 1, configuracio, flag, i + 1);
+            configuracio.get(i).setPreu((configuracio.get(i).getPreu() - sabatesArray[ordre].getPreu()));
+            configuracio.get(i).getSabates().remove(sabatesArray[ordre]);
+        }
+
+
+
+        /*for (int i = 0; i < sabatesArray.length; i++) {
+            if (!sabatesArray[i].getUtilitzat()) {
+
+                totalpreu += sabatesArray[i].getPreu();
+                configuracio[ordre] = sabatesArray[i];
+
+                sabatesArray[i].setUtilitzat(true);
+
+                nIteracions++;
+                enviamentCaixesForcaBruta(sabatesArray, ordre + 1, totalpreu, configuracio, confMenor);
+                totalpreu -= sabatesArray[i].getPreu();
+                sabatesArray[i].setUtilitzat(false);
+            }
+        }*/
+    }
+
+    private static float calcularTotalPrecio(Sabata[] confMenor) {
+        int totalPreu = 0;
+        for (int i = 0; i < confMenor.length; i++) {
+            totalPreu += confMenor[i].getPreu();
+        }
+        return totalPreu;
+    }
+
+    private static void mostrarDades(ArrayList<Caixa> configuracio){
+        cajastotales++;
+        for(int i= 0;i<configuracio.size()-1;i++){
+            System.out.println("Caja "+i);
+            for(int j = 0; j<configuracio.get(i).getSabates().size();j++){
+                System.out.println("Sabata "+configuracio.get(i).getSabates().get(j).getNom());
+            }
+            System.out.println("Preu "+configuracio.get(i).getPreu());
         }
     }
 
-    //Divisio inventari Algoritmes:
+    //Falta el ultimo zapato
+    /*
+    private static void classificarSabates(Sabata[] sabatesArray){
+
+        String sabataDupl = "";
+        int sabataDuplIndex = 0;
+        System.out.println("Sabates"+ sabatesArray.length);
+        for (int i = 0; i < sabatesArray.length; i++) {
+            if (sabatesArray[i].getMax_talla() < 35) {
+                sabatesNens.add(i);
+            } else if (sabatesArray[i].getPuntuacio() < 5) {
+                sabatesPuntInferior.add(i);
+            } else if (sabatesArray[i].getPuntuacio() > 8) {
+                sabatesPuntSuperior.add(i);
+            } else if (sabatesArray[i].getNom().equals(sabataDupl)) {
+                sabatesDupl.add(i);
+                sabatesDupl.add(sabataDuplIndex);
+                sabataDuplIndex = 0;
+            } else if (sabataDuplIndex == 0) {
+                sabataDuplIndex = i;
+            } else {
+                sabatesDescart.add(i);
+            }
+        }
+
+        if (sabataDuplIndex != 0){
+            sabatesDescart.add(sabataDuplIndex);
+        }
+
+        System.out.println("Sabates duplicades: ");
+        for(int i = 0; i < sabatesDupl.size(); i++){
+            System.out.println(sabatesDupl.get(i));
+        }
+
+        System.out.println("Sabates nens: ");
+        for (int i = 0; i < sabatesNens.size(); i++) {
+            System.out.println(sabatesNens.get(i));
+        }
+
+        System.out.println("Sabates punt inferior: ");
+        for (int i = 0; i < sabatesPuntInferior.size(); i++) {
+            System.out.println(sabatesPuntInferior.get(i));
+        }
+
+        System.out.println("Sabates punt superior: ");
+        for (int i = 0; i < sabatesPuntSuperior.size(); i++) {
+            System.out.println(sabatesPuntSuperior.get(i));
+        }
+
+        System.out.println("Sabates descartades: ");
+        for (int i = 0; i < sabatesDescart.size(); i++) {
+            System.out.println(sabatesDescart.get(i));
+        }
+    }
+
+     */
+
+    private static void enviamentCaixesBacktracking(Sabata[] sabatesArray, int ordre, float totalpreu, Sabata[] configuracio, int sabataNensIndex) {
+        /*
+        if (ordre == 6 || sabataNensIndex == sabatesNens.size()) {
+            totalpreu = CalcularDescomptes(totalpreu, configuracio);
+            mostrarDades( configuracio, totalpreu, ordre);
+
+            if (nSabatesContar != nSabatesFitxer) {
+                configuracio = new Sabata[6];
+                enviamentCaixesBacktracking(sabatesArray, 0, 0, configuracio, 0); //Empezar desde el inicio
+            }
+
+
+            return;
+        }
+
+        if (sabataNensIndex != sabatesNens.size()){
+            totalpreu += sabatesArray[sabatesNens.get(sabataNensIndex)].getPreu();
+            configuracio[ordre] = sabatesArray[sabatesNens.get(sabataNensIndex)];
+            nSabatesContar++;
+            nIteracions++;
+            sabataNensIndex++;
+            enviamentCaixesBacktracking(sabatesArray, ordre + 1, totalpreu, configuracio, sabataNensIndex);
+        }
+        */
+
+    }
+
     private static void divisioInventariForcaBruta(Sabata[] sabatesArray) {
 
         ArrayList<Sabata> inventari1 = new ArrayList<Sabata>();
@@ -270,7 +461,6 @@ public class Main {
         return costo;
     }
 
-
     public static void main(String[] args) {
 
         Sabata[] sabatesArray = lecturaFitxer();
@@ -288,7 +478,7 @@ public class Main {
             int option2 = 0, option3 = 0;
             int ordre = 0;
             int totalpreu = 0;
-
+            ArrayList<Caixa> configuracio = new ArrayList<Caixa>();
             //classificarSabates(sabatesArray);
             switch (option){
                 case 1:
@@ -305,10 +495,9 @@ public class Main {
                             case 1:
                                 System.out.printf("Has escollit l'algorisme de força bruta\n");
 
-                                ArrayList<Sabata> configuracio = new ArrayList<Sabata>();
-                                ArrayList<Caixa> caixes = new ArrayList<Caixa>();
+                                configuracio = new ArrayList<Caixa>();
 
-                                enviamentCaixesForcaBruta(sabatesArray, 0, 0, configuracio, caixes);
+                                enviamentCaixesForcaBruta(sabatesArray, 0, configuracio,0,0);
 
                                 //System.out.println("Numero iteracions: " + nIteracions);
                                 System.out.println("Numero cajas: " + cajastotales);
@@ -377,8 +566,6 @@ public class Main {
         }
 
     }
-
-
 
 
 }
