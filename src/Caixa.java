@@ -26,6 +26,10 @@ public class Caixa {
         return Preu;
     }
 
+    public int getTamany( ArrayList<Sabata> sabatas ){
+        return sabatas.size();
+    }
+
     public void setSabates(Sabata Sabata) {
         this.Sabates.add(Sabata);
     }
