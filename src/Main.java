@@ -7,7 +7,7 @@ import java.io.File;
 public class Main {
     static int nIteracions;
     static int nSabatesFitxer = 0;
-    static int cajastotales = 0;
+    static int cajastotales = 1;
 
     public static Sabata[] lecturaFitxer(){
         try {
@@ -124,43 +124,29 @@ public class Main {
     }
 
     public static void enviamentCaixesForcaBruta(Sabata[] sabatesArray, int ordre, ArrayList<Caixa> configuracio) {
-        if (ordre == sabatesArray.length || cajastotales > sabatesArray.length) {
+        if (ordre == sabatesArray.length) {
             mostrarDades(configuracio);
             return;
         }
-
-        if (configuracio.isEmpty()) {
-            configuracio.add(new Caixa(0, 0));
-            configuracio.get(0).setSabates(sabatesArray[ordre]);
-            configuracio.get(0).setPreu(sabatesArray[ordre].getPreu());
-
-            nIteracions++;
-            enviamentCaixesForcaBruta(sabatesArray, ordre+1, configuracio);
-            configuracio.get(0).setPreu(configuracio.get(0).getPreu() - sabatesArray[ordre].getPreu());
-            configuracio.get(0).getSabates().remove(sabatesArray[ordre]);
-        }  else {
-            // Bucle para manejar el resto de las cajas
-            for (int i = 0; i < configuracio.size(); i++) {
-                configuracio.get(i).setSabates(sabatesArray[ordre]);
-                configuracio.get(i).setPreu(configuracio.get(i).getPreu() + sabatesArray[ordre].getPreu());
-                enviamentCaixesForcaBruta(sabatesArray, ordre + 1, configuracio);
-
-                configuracio.get(i).setPreu(configuracio.get(i).getPreu() - sabatesArray[ordre].getPreu());
-                configuracio.get(i).getSabates().remove(sabatesArray[ordre]);
-            }
-
-            Caixa nuevaCaixa = new Caixa(0, 0);
-            cajastotales++;
-            nuevaCaixa.setSabates(sabatesArray[ordre]);
-            nuevaCaixa.setPreu(sabatesArray[ordre].getPreu());
-            configuracio.add(nuevaCaixa);
-
-            //totalpreu = CalcularDescomptes(totalpreu, configuracio);
-
+        // Bucle para manejar el resto de las cajas
+        for (int i = 0; i < configuracio.size(); i++) {
+            configuracio.get(i).setSabates(sabatesArray[ordre]);
+            configuracio.get(i).setPreu(configuracio.get(i).getPreu() + sabatesArray[ordre].getPreu());
             nIteracions++;
             enviamentCaixesForcaBruta(sabatesArray, ordre + 1, configuracio);
-            }
+            configuracio.get(i).setPreu(configuracio.get(i).getPreu() - sabatesArray[ordre].getPreu());
+            configuracio.get(i).getSabates().remove(sabatesArray[ordre]);
         }
+        Caixa nuevaCaixa = new Caixa(0, 0);
+        cajastotales++;
+        nuevaCaixa.setSabates(sabatesArray[ordre]);
+        nuevaCaixa.setPreu(sabatesArray[ordre].getPreu());
+        configuracio.add(nuevaCaixa);
+        //totalpreu = CalcularDescomptes(totalpreu, configuracio);
+        nIteracions++;
+        enviamentCaixesForcaBruta(sabatesArray, ordre + 1, configuracio);
+        configuracio.remove(configuracio.size() - 1);
+    }
 
     private static void mostrarDades(ArrayList<Caixa> configuracio){
 
@@ -326,9 +312,10 @@ public class Main {
                                 System.out.printf("Has escollit l'algorisme de força bruta\n");
 
                                 configuracio = new ArrayList<Caixa>();
-
-                                enviamentCaixesForcaBruta(sabatesArray, 0, configuracio);
-
+                                configuracio.add(new Caixa(0, 0));
+                                configuracio.get(0).setSabates(sabatesArray[0]);
+                                configuracio.get(0).setPreu(sabatesArray[0].getPreu());
+                                enviamentCaixesForcaBruta(sabatesArray, 1, configuracio);
                                 //System.out.println("Numero iteracions: " + nIteracions);
                                 System.out.println("Numero cajas: " + cajastotales);
                                 //System.out.println("Numero random: " + contadorRandom);
