@@ -8,6 +8,7 @@ public class Caixa {
 
     private float Preu;
 
+
     public Caixa(int Pes, float Preu) {
         this.Sabates = new ArrayList<Sabata>();
         this.Pes = Pes;
@@ -41,4 +42,5 @@ public class Caixa {
     public void setPreu(float Preu) {
         this.Preu = Preu;
     }
+
 }

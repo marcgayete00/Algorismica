@@ -63,4 +63,7 @@ public class Sabata {
         this.descompte = descompte;
     }
 
+    public void setPreu(float noupreu) {
+        this.preu = noupreu;
+    }
 }
