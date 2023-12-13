@@ -144,7 +144,6 @@ public class Main {
             configuracio.get(i).setPreu(configuracio.get(i).getPreu() + sabatesArray[ordre].getPreu());
             nIteracions++;
             CalcularDescomptes(configuracio);
-
             enviamentCaixesForcaBruta(sabatesArray, ordre + 1, configuracio);
             configuracio.get(i).setPreu(configuracio.get(i).getPreu() - sabatesArray[ordre].getPreu());
             configuracio.get(i).getSabates().remove(sabatesArray[ordre]);
@@ -165,7 +164,8 @@ public class Main {
         for(int i= 0;i<configuracio.toArray().length;i++){
             System.out.println("Caja "+i);
             for(int j = 0; j<configuracio.get(i).getSabates().size();j++){
-                System.out.println("Sabata "+configuracio.get(i).getSabates().get(j).getNom());
+                System.out.print("Sabata "+configuracio.get(i).getSabates().get(j).getNom() + " ");
+                System.out.println(configuracio.get(i).getSabates().get(j).getPreu());
             }
             System.out.println("Preu "+configuracio.get(i).getPreu());
         }
