@@ -54,14 +54,14 @@ public class Main {
 
         //Descompte 20% marca duplicada
         for (int i = 0; i<configuracio.toArray().length; i++){
-                System.out.println("Antes TotalPreu"+ configuracio.get(i).getPreu());
 
-                for(int j = 0; j<configuracio.get(i).getSabates().size(); j++){
+                for(int j = 0; j<configuracio.get(i).getSabates().size(); j++) {
 
 
-                    for (int k = 0; k<configuracio.get(i).getSabates().size(); k++){
+                    for (int k = 0; k < configuracio.get(i).getSabates().size(); k++) {
 
-                        if (configuracio.get(i).getSabates().get(j).getNom().equals(configuracio.get(i).getSabates().get(k).getNom()) && j != k && configuracio.get(i).getSabates().get(j).getDescompte() == 0){
+                        if (configuracio.get(i).getSabates().get(j).getNom().equals(configuracio.get(i).getSabates().get(k).getNom()) && j != k && configuracio.get(i).getSabates().get(j).getDescompte() == 0) {
+                            System.out.println("Antes TotalPreu" + configuracio.get(i).getPreu());
                             float preuSabata = configuracio.get(i).getSabates().get(j).getPreu();
                             configuracio.get(i).getSabates().get(j).setDescompte(preuSabata * 0.2f);
                             configuracio.get(i).setPreu(configuracio.get(i).getPreu() - (configuracio.get(i).getSabates().get(j).getDescompte()));
@@ -73,19 +73,22 @@ public class Main {
 
 
                     //System.out.println("Sabata "+ configuracio[i].getNom() + configuracio[i].getPuntuacio());
-                    if (configuracio.get(i).getSabates().get(j).getMax_talla() < 35 ){
+                    if (configuracio.get(i).getSabates().get(j).getMax_talla() < 35) {
                         sabatesNens.add(i);
                     }
 
-                    if (configuracio.get(i).getSabates().get(j).getPuntuacio() < 5){
+                    if (configuracio.get(i).getSabates().get(j).getPuntuacio() < 5) {
                         sabatesPuntInferior.add(i);
                     }
 
-                    if (configuracio.get(i).getSabates().get(j).getPuntuacio() > 8){
+                    if (configuracio.get(i).getSabates().get(j).getPuntuacio() > 8) {
                         sabatesPuntSuperior.add(i);
                     }
-            }
+                }
+
+
         }
+
         /*
         //Descompte 35% sabates nens
         if (sabatesNens.size() > 1){
