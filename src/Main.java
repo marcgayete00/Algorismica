@@ -48,30 +48,28 @@ public class Main {
         return null;
     }
     private static void CalcularDescomptes(ArrayList<Caixa> configuracio) {
-        ArrayList<Integer> sabatesNens = new ArrayList<Integer>();
-        ArrayList<Integer> sabatesPuntInferior = new ArrayList<Integer>();
-        ArrayList<Integer> sabatesPuntSuperior = new ArrayList<Integer>();
+        ArrayList<Integer> sabatesNens = new ArrayList<>();
+        ArrayList<Integer> sabatesPuntInferior = new ArrayList<>();
+        ArrayList<Integer> sabatesPuntSuperior = new ArrayList<>();
 
         //Descompte 20% marca duplicada
-        for (int i = 0; i<configuracio.toArray().length; i++){
+        for (int i = 0; i<configuracio.size(); i++){
 
                 for(int j = 0; j<configuracio.get(i).getSabates().size(); j++) {
 
+                    System.out.println("Sabata" +j+ ": de caja "+ i +" " +configuracio.get(i).getSabates().get(j).getNom() + " " + configuracio.get(i).getSabates().get(j).getPreu() + " " + configuracio.get(i).getSabates().get(j).getDescompte());
 
                     for (int k = 0; k < configuracio.get(i).getSabates().size(); k++) {
 
                         if (configuracio.get(i).getSabates().get(j).getNom().equals(configuracio.get(i).getSabates().get(k).getNom()) && j != k && configuracio.get(i).getSabates().get(j).getDescompte() == 0) {
                             System.out.println("Antes TotalPreu" + configuracio.get(i).getPreu());
-                            float preuSabata = configuracio.get(i).getSabates().get(j).getPreu();
-                            configuracio.get(i).getSabates().get(j).setDescompte(preuSabata * 0.2f);
+                            configuracio.get(i).getSabates().get(j).setDescompte(configuracio.get(i).getSabates().get(j).getPreu() * 0.2f);
                             configuracio.get(i).setPreu(configuracio.get(i).getPreu() - (configuracio.get(i).getSabates().get(j).getDescompte()));
                             System.out.println("Despues TotalPreu" + configuracio.get(i).getPreu());
 
                         }
 
                     }
-
-
                     //System.out.println("Sabata "+ configuracio[i].getNom() + configuracio[i].getPuntuacio());
                     if (configuracio.get(i).getSabates().get(j).getMax_talla() < 35) {
                         sabatesNens.add(i);
@@ -135,7 +133,9 @@ public class Main {
             /*if(configuracio.size() < configuraciooptima.size()){
                 configuraciooptima = configuracio;
             }*/
+            CalcularDescomptes(configuracio);
             mostrarDades(configuracio);
+
             return;
         }
         // Bucle para manejar el resto de las cajas
@@ -143,7 +143,6 @@ public class Main {
             configuracio.get(i).setSabates(sabatesArray[ordre]);
             configuracio.get(i).setPreu(configuracio.get(i).getPreu() + sabatesArray[ordre].getPreu());
             nIteracions++;
-            CalcularDescomptes(configuracio);
             enviamentCaixesForcaBruta(sabatesArray, ordre + 1, configuracio);
             configuracio.get(i).setPreu(configuracio.get(i).getPreu() - sabatesArray[ordre].getPreu());
             configuracio.get(i).getSabates().remove(sabatesArray[ordre]);
@@ -200,8 +199,8 @@ public class Main {
 
     private static void divisioInventariForcaBruta(Sabata[] sabatesArray) {
 
-        ArrayList<Sabata> inventari1 = new ArrayList<Sabata>();
-        ArrayList<Sabata> inventari2 = new ArrayList<Sabata>();
+        ArrayList<Sabata> inventari1 = new ArrayList<>();
+        ArrayList<Sabata> inventari2 = new ArrayList<>();
 
         int costInvetari1 = 0;
         int costInvetari2 = 0;
@@ -297,10 +296,10 @@ public class Main {
         //mostrarDades(sabatesArray);
 
         while (true) {
-            System.out.printf("Benvingut a la sabateria zaballos\n");
-            System.out.printf("---- Escolliu un problema a resoldre ----\n");
-            System.out.printf("1. Enviament de caixes\n");
-            System.out.printf("2. Divisió d'inventari\n");
+            System.out.print("Benvingut a la sabateria zaballos\n");
+            System.out.print("---- Escolliu un problema a resoldre ----\n");
+            System.out.print("1. Enviament de caixes\n");
+            System.out.print("2. Divisió d'inventari\n");
 
             Scanner sc = new Scanner(System.in);
             int option = sc.nextInt();
@@ -311,17 +310,17 @@ public class Main {
             switch (option){
                 case 1:
                     while(option2 != 4){
-                        System.out.printf("---- Escolliu un algorisme ----\n");
-                        System.out.printf("1. Força bruta\n");
-                        System.out.printf("2. Backtracking\n");
-                        System.out.printf("3. Programació dinàmica\n");
-                        System.out.printf("4. Tornar\n");
+                        System.out.print("---- Escolliu un algorisme ----\n");
+                        System.out.print("1. Força bruta\n");
+                        System.out.print("2. Backtracking\n");
+                        System.out.print("3. Programació dinàmica\n");
+                        System.out.print("4. Tornar\n");
 
                         option2 = sc.nextInt();
 
                         switch (option2){
                             case 1:
-                                System.out.printf("Has escollit l'algorisme de força bruta\n");
+                                System.out.print("Has escollit l'algorisme de força bruta\n");
 
                                 configuracio = new ArrayList<Caixa>();
                                 configuracio.add(new Caixa(0, 0));
@@ -336,40 +335,40 @@ public class Main {
 
                                 break;
                             case 2:
-                                System.out.printf("Has escollit l'algorisme de backtracking\n");
+                                System.out.print("Has escollit l'algorisme de backtracking\n");
                                 break;
                             case 3:
-                                System.out.printf("Has escollit l'algorisme de programació dinàmica\n");
+                                System.out.print("Has escollit l'algorisme de programació dinàmica\n");
                                 break;
                             case 4:
                                 break;
                             default:
-                                System.out.printf("Opció incorrecta\n");
+                                System.out.print("Opció incorrecta\n");
                                 break;
                         }
                     }
                 case 2:
-                    System.out.printf("Has escollit l'opció 2\n");
+                    System.out.print("Has escollit l'opció 2\n");
                     while(option3 != 4){
-                        System.out.printf("---- Escolliu un algorisme ----\n");
-                        System.out.printf("1. Força bruta\n");
-                        System.out.printf("2. Greedy\n");
-                        System.out.printf("3. Greedy2\n");
-                        System.out.printf("4. Tornar\n");
+                        System.out.print("---- Escolliu un algorisme ----\n");
+                        System.out.print("1. Força bruta\n");
+                        System.out.print("2. Greedy\n");
+                        System.out.print("3. Greedy2\n");
+                        System.out.print("4. Tornar\n");
 
                         option3 = sc.nextInt();
 
                         switch (option3){
                             case 1:
-                                System.out.printf("Has escollit l'algorisme de força bruta\n");
+                                System.out.print("Has escollit l'algorisme de força bruta\n");
                                 divisioInventariForcaBruta(sabatesArray);
                                 break;
                             case 2:
-                                System.out.printf("Has escollit l'algorisme greedy\n");
+                                System.out.print("Has escollit l'algorisme greedy\n");
                                 divisioInventariGreedy(sabatesArray);
                                 break;
                             case 3:
-                                System.out.printf("Has escollit l'algorisme de greedy 2\n");
+                                System.out.print("Has escollit l'algorisme de greedy 2\n");
                                 System.out.println("Tria el numero d'inventaris");
                                 int numInvetaris = sc.nextInt();
                                 List<Sabata> sabatesList = Arrays.asList(sabatesArray);
@@ -383,13 +382,13 @@ public class Main {
                             case 4:
                                 break;
                             default:
-                                System.out.printf("Opció incorrecta\n");
+                                System.out.print("Opció incorrecta\n");
                                 break;
                         }
                     }
                     break;
                 default:
-                    System.out.printf("Opció incorrecta\n");
+                    System.out.print("Opció incorrecta\n");
                     break;
             }
         }
