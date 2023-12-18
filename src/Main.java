@@ -51,21 +51,19 @@ public class Main {
         ArrayList<Integer> sabatesNens = new ArrayList<>();
         ArrayList<Integer> sabatesPuntInferior = new ArrayList<>();
         ArrayList<Integer> sabatesPuntSuperior = new ArrayList<>();
-
         //Descompte 20% marca duplicada
         for (int i = 0; i<configuracio.size(); i++){
 
                 for(int j = 0; j<configuracio.get(i).getSabates().size(); j++) {
 
-                    System.out.println("Sabata" +j+ ": de caja "+ i +" " +configuracio.get(i).getSabates().get(j).getNom() + " " + configuracio.get(i).getSabates().get(j).getPreu() + " " + configuracio.get(i).getSabates().get(j).getDescompte());
+                    //System.out.println("Sabata" +j+ ": de caja "+ i +" " +configuracio.get(i).getSabates().get(j).getNom() + " " + configuracio.get(i).getSabates().get(j).getPreu() + " " + configuracio.get(i).getSabates().get(j).getDescompte());
 
                     for (int k = 0; k < configuracio.get(i).getSabates().size(); k++) {
 
                         if (configuracio.get(i).getSabates().get(j).getNom().equals(configuracio.get(i).getSabates().get(k).getNom()) && j != k && configuracio.get(i).getSabates().get(j).getDescompte() == 0) {
-                            System.out.println("Antes TotalPreu" + configuracio.get(i).getPreu());
+
                             configuracio.get(i).getSabates().get(j).setDescompte(configuracio.get(i).getSabates().get(j).getPreu() * 0.2f);
-                            configuracio.get(i).setPreu(configuracio.get(i).getPreu() - (configuracio.get(i).getSabates().get(j).getDescompte()));
-                            System.out.println("Despues TotalPreu" + configuracio.get(i).getPreu());
+                            //configuracio.get(i).setPreu(configuracio.get(i).getPreu() - (configuracio.get(i).getSabates().get(j).getDescompte()));
 
                         }
 
@@ -128,34 +126,62 @@ public class Main {
         }*/
     }
 
-    public static void enviamentCaixesForcaBruta(Sabata[] sabatesArray, int ordre, ArrayList<Caixa> configuracio) {
+    public static void enviamentCaixesForcaBruta(Sabata[] sabatesArray, int ordre, ArrayList<Caixa> configuracio,ArrayList<Caixa> configuraciooptima) {
         if (ordre == sabatesArray.length) {
-            /*if(configuracio.size() < configuraciooptima.size()){
-                configuraciooptima = configuracio;
-            }*/
+
             CalcularDescomptes(configuracio);
-            mostrarDades(configuracio);
+            calcularpreuCaixa(configuracio, configuraciooptima);
 
             return;
         }
         // Bucle para manejar el resto de las cajas
         for (int i = 0; i < configuracio.size(); i++) {
             configuracio.get(i).setSabates(sabatesArray[ordre]);
-            configuracio.get(i).setPreu(configuracio.get(i).getPreu() + sabatesArray[ordre].getPreu());
+            //configuracio.get(i).setPreu(configuracio.get(i).getPreu() + sabatesArray[ordre].getPreu());
             nIteracions++;
-            enviamentCaixesForcaBruta(sabatesArray, ordre + 1, configuracio);
-            configuracio.get(i).setPreu(configuracio.get(i).getPreu() - sabatesArray[ordre].getPreu());
+            enviamentCaixesForcaBruta(sabatesArray, ordre + 1, configuracio,configuraciooptima);
+            //configuracio.get(i).setPreu(configuracio.get(i).getPreu() - sabatesArray[ordre].getPreu());
             configuracio.get(i).getSabates().remove(sabatesArray[ordre]);
         }
 
         Caixa nuevaCaixa = new Caixa(0, 0);
         cajastotales++;
         nuevaCaixa.setSabates(sabatesArray[ordre]);
-        nuevaCaixa.setPreu(sabatesArray[ordre].getPreu());
+        //nuevaCaixa.setPreu(sabatesArray[ordre].getPreu());
         configuracio.add(nuevaCaixa);
         nIteracions++;
-        enviamentCaixesForcaBruta(sabatesArray, ordre + 1, configuracio);
+        enviamentCaixesForcaBruta(sabatesArray, ordre + 1, configuracio,configuraciooptima);
         configuracio.remove(configuracio.size() - 1);
+    }
+
+    private static void calcularpreuCaixa(ArrayList<Caixa> configuracio, ArrayList<Caixa> configuraciooptima) {
+        boolean preuexces = false;
+        for(int i = 0;i<configuracio.size();i++){
+            for(int j = 0;j<configuracio.get(i).getSabates().size();j++){
+                //System.out.println("Antes TotalPreu" + configuracio.get(i).getPreu());
+                //System.out.println("Descuento: " + configuracio.get(i).getSabates().get(j).getDescompte());
+                configuracio.get(i).setPreu(configuracio.get(i).getPreu() + (configuracio.get(i).getSabates().get(j).getPreu() - configuracio.get(i).getSabates().get(j).getDescompte()));
+                //System.out.println("Despues TotalPreu" + configuracio.get(i).getPreu());
+            }
+        }
+        for(int i = 0;i<configuracio.size();i++){
+            if(configuracio.get(i).getPreu() > 1000){
+                preuexces = true;
+            }
+        }
+        System.out.println("Size1: " + configuracio.size() + " Size2: " + configuraciooptima.size());
+        //Configuracioptima tenemos que hacer que sea la primera configuracion para poderla comparar con las demás
+        /*if(configuracio.size() <= configuraciooptima.size() && !preuexces){
+            configuraciooptima = configuracio;
+            mostrarDades(configuraciooptima);
+        }*/
+        //mostrarDades(configuracio);
+        for(int i = 0;i<configuracio.size();i++){
+            configuracio.get(i).setPreu(0);
+            for(int j = 0;j<configuracio.get(i).getSabates().size();j++){
+                configuracio.get(i).getSabates().get(j).setDescompte(0);
+            }
+        }
     }
 
     private static void mostrarDades(ArrayList<Caixa> configuracio){
@@ -306,6 +332,7 @@ public class Main {
             int option2 = 0, option3 = 0;
 
             ArrayList<Caixa> configuracio = new ArrayList<Caixa>();
+            ArrayList<Caixa> configuraciooptima = new ArrayList<Caixa>();
             //classificarSabates(sabatesArray);
             switch (option){
                 case 1:
@@ -325,8 +352,8 @@ public class Main {
                                 configuracio = new ArrayList<Caixa>();
                                 configuracio.add(new Caixa(0, 0));
                                 configuracio.get(0).setSabates(sabatesArray[0]);
-                                configuracio.get(0).setPreu(sabatesArray[0].getPreu());
-                                enviamentCaixesForcaBruta(sabatesArray, 1, configuracio);
+                                //configuracio.get(0).setPreu(sabatesArray[0].getPreu());
+                                enviamentCaixesForcaBruta(sabatesArray, 1, configuracio,configuraciooptima);
                                 //System.out.println("Numero iteracions: " + nIteracions);
                                 System.out.println("Numero cajas: " + cajastotales);
                                 //System.out.println("Numero random: " + contadorRandom);

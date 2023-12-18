@@ -4,6 +4,14 @@ public class Caixa {
 
     private ArrayList<Sabata> Sabates;
 
+    private int[] numSabatesMarques;
+
+    private int numSabatesNens;
+
+    private int numSabatesPA;
+
+    private int numSabatesPB;
+
     private int Pes;
 
     private float Preu;
@@ -11,6 +19,9 @@ public class Caixa {
 
     public Caixa(int Pes, float Preu) {
         this.Sabates = new ArrayList<Sabata>();
+        this.numSabatesNens = 0;
+        this.numSabatesPA = 0;
+        this.numSabatesPB = 0;
         this.Pes = Pes;
         this.Preu = Preu;
     }
@@ -27,9 +38,34 @@ public class Caixa {
         return Preu;
     }
 
-    public int getTamany( ArrayList<Sabata> sabatas ){
-        return sabatas.size();
+    public int getNumSabatesNens() {
+        return numSabatesNens;
     }
+
+    public int getNumSabatesPA() {
+        return numSabatesPA;
+    }
+
+    public int getNumSabatesPB() {
+        return numSabatesPB;
+    }
+
+    public int[] addNumSabatesMarques() {
+        return numSabatesMarques;
+    }
+
+    public void setNumSabatesMarques(int[] numSabatesMarques) {
+        this.numSabatesMarques = numSabatesMarques;
+    }
+
+    public void addNumSabatesNens() {
+        this.numSabatesNens++;
+    }
+
+    public void addNumSabatesPA(int numSabatesPA) {
+        this.numSabatesPA = numSabatesPA;
+    }
+
 
     public void setSabates(Sabata Sabata) {
         this.Sabates.add(Sabata);
