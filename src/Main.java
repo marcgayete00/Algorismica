@@ -158,10 +158,7 @@ public class Main {
         boolean preuexces = false;
         for(int i = 0;i<configuracio.size();i++){
             for(int j = 0;j<configuracio.get(i).getSabates().size();j++){
-                //System.out.println("Antes TotalPreu" + configuracio.get(i).getPreu());
-                //System.out.println("Descuento: " + configuracio.get(i).getSabates().get(j).getDescompte());
                 configuracio.get(i).setPreu(configuracio.get(i).getPreu() + (configuracio.get(i).getSabates().get(j).getPreu() - configuracio.get(i).getSabates().get(j).getDescompte()));
-                //System.out.println("Despues TotalPreu" + configuracio.get(i).getPreu());
             }
         }
         for(int i = 0;i<configuracio.size();i++){
@@ -170,18 +167,23 @@ public class Main {
             }
         }
         System.out.println("Size1: " + configuracio.size() + " Size2: " + configuraciooptima.size());
-        //Configuracioptima tenemos que hacer que sea la primera configuracion para poderla comparar con las demás
-        /*if(configuracio.size() <= configuraciooptima.size() && !preuexces){
-            configuraciooptima = configuracio;
-            mostrarDades(configuraciooptima);
-        }*/
-        //mostrarDades(configuracio);
+        if(configuraciooptima.size() == 0 && !preuexces){
+            System.out.println("Hola");
+            configuraciooptima.addAll(configuracio);
+        }
+        if(configuracio.size() < configuraciooptima.size() && !preuexces){
+            configuraciooptima.addAll(configuracio);
+        }
+        mostrarDades(configuraciooptima);
+
         for(int i = 0;i<configuracio.size();i++){
             configuracio.get(i).setPreu(0);
             for(int j = 0;j<configuracio.get(i).getSabates().size();j++){
                 configuracio.get(i).getSabates().get(j).setDescompte(0);
             }
         }
+
+        configuraciooptima.clear();
     }
 
     private static void mostrarDades(ArrayList<Caixa> configuracio){
