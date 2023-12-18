@@ -11,7 +11,7 @@ public class Main {
 
     public static Sabata[] lecturaFitxer(){
         try {
-            File myObj = new File("Datasets/datasetXXS.txt");
+            File myObj = new File("Datasets/datasetXS.txt");
             Scanner myReader = new Scanner(myObj);
 
             nSabatesFitxer = Integer.parseInt(myReader.nextLine());
@@ -166,15 +166,17 @@ public class Main {
                 preuexces = true;
             }
         }
-        System.out.println("Size1: " + configuracio.size() + " Size2: " + configuraciooptima.size());
+        //System.out.println("Size1: " + configuracio.size() + " Size2: " + configuraciooptima.size());
         if(configuraciooptima.size() == 0 && !preuexces){
-            System.out.println("Hola");
             configuraciooptima.addAll(configuracio);
+            mostrarDades(configuraciooptima);
         }
         if(configuracio.size() < configuraciooptima.size() && !preuexces){
+            configuraciooptima.clear();
             configuraciooptima.addAll(configuracio);
+            mostrarDades(configuraciooptima);
+
         }
-        mostrarDades(configuraciooptima);
 
         for(int i = 0;i<configuracio.size();i++){
             configuracio.get(i).setPreu(0);
@@ -183,7 +185,6 @@ public class Main {
             }
         }
 
-        configuraciooptima.clear();
     }
 
     private static void mostrarDades(ArrayList<Caixa> configuracio){
