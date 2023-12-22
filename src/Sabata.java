@@ -59,6 +59,10 @@ public class Sabata {
         this.utilitzat = utilitzat;
     }
 
+    public boolean isUtilitzat() {
+        return utilitzat;
+    }
+
     public void setDescompte(float descompte) {
         this.descompte = descompte;
     }
