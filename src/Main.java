@@ -12,7 +12,7 @@ public class Main {
     static ArrayList<Caixa> configuraciooptima = new ArrayList<Caixa>();
     public static Sabata[] lecturaFitxer(){
         try {
-            File myObj = new File("Datasets/datasetXXS.txt");
+            File myObj = new File("Datasets/datasetXS.txt");
             Scanner myReader = new Scanner(myObj);
 
             nSabatesFitxer = Integer.parseInt(myReader.nextLine());
@@ -65,7 +65,6 @@ public class Main {
 
                             configuracio.get(i).getSabates().get(j).setDescompte(configuracio.get(i).getSabates().get(j).getPreu() * 0.2f);
                             //configuracio.get(i).setPreu(configuracio.get(i).getPreu() - (configuracio.get(i).getSabates().get(j).getDescompte()));
-
                         }
 
                     }
@@ -86,10 +85,18 @@ public class Main {
 
         }
 
-        /*
+
         //Descompte 35% sabates nens
         if (sabatesNens.size() > 1){
-            float descompte = 0;
+            for (int i = 0; i<configuracio.size(); i++){
+                for(int j = 0; j<configuracio.get(i).getSabates().size(); j++) {
+                    
+                }
+            }
+        }
+
+        /*
+        if (sabatesNens.size() > 1){
             for (int i = 0; i<sabatesNens.size(); i++){
                 descompte += configuracio[sabatesNens.get(i)].getPreu() * 0.35f;
                 //System.out.println("Descompte nens de: " + descompte + " a la sabata: " + configuracio[sabatesNens.get(i)].getNom());
@@ -99,6 +106,8 @@ public class Main {
             System.out.println("Despues nens TotalPreu"+totalpreu);
         }
 
+         */
+        /*
         //3 sabates puntuacio menor a 5 40%
         if (sabatesPuntInferior.size() > 2){
             System.out.println("Sabates punt inferior: " + sabatesPuntInferior.size());
@@ -124,7 +133,9 @@ public class Main {
             System.out.println("Antes puntuacio sup TotalPreu"+totalpreu);
             totalpreu -= descompte;
             System.out.println("Despues puntuacio sup TotalPreu"+totalpreu);
-        }*/
+        }
+
+         */
     }
 
 
