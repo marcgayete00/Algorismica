@@ -10,6 +10,11 @@ public class Sabata {
 
     private float descompte = 0;
 
+    private boolean descompteDuplicat;
+    private boolean descompteNens;
+    private boolean incrementPS;
+    private boolean descomptePI;
+
 
     public Sabata(String nom, float preu, int min_talla, int max_talla, int pes, float puntuacio, boolean utilitzat, float descompte) {
         this.nom = nom;
@@ -20,6 +25,10 @@ public class Sabata {
         this.puntuacio = puntuacio;
         this.utilitzat = utilitzat;
         this.descompte = descompte;
+        this.descompteDuplicat = false;
+        this.descompteNens = false;
+        this.incrementPS = false;
+        this.descomptePI = false;
     }
 
     public String getNom() {
@@ -69,5 +78,37 @@ public class Sabata {
 
     public void setPreu(float noupreu) {
         this.preu = noupreu;
+    }
+
+    public boolean isDescompteDuplicat() {
+        return descompteDuplicat;
+    }
+
+    public boolean isDescompteNens() {
+        return descompteNens;
+    }
+
+    public boolean isIncrementPS() {
+        return incrementPS;
+    }
+
+    public boolean isDescomptePI() {
+        return descomptePI;
+    }
+
+    public void setDescompteDuplicat(boolean descompteDuplicat) {
+        this.descompteDuplicat = descompteDuplicat;
+    }
+
+    public void setDescompteNens(boolean descompteNens) {
+        this.descompteNens = descompteNens;
+    }
+
+    public void setIncrementPS(boolean incrementPS) {
+        this.incrementPS = incrementPS;
+    }
+
+    public void setDescomptePI(boolean descomptePI) {
+        this.descomptePI = descomptePI;
     }
 }

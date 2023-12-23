@@ -2,6 +2,6 @@
 Abernathy1, Witting and Lebsack Ferry;145,28;32;40;2702;10
 Farrell-Powlowski Koch 2;491,62;27;38;2950;10
 Abernathy2, Torphy and Pfeffer Larson 0;295,11;40;30;3088;10
-Farrell-Powlowski Shooe;93,43;16;45;1843;10
-Farrell-Powlowski Gottlieb 50;174,89;15;45;3465;10
-Farrell-Powlowski Tillman;121,62;17;42;2284;10
+Farrell-Powlowski Shooe;93,43;16;45;1843;5
+Farrell-Powlowski Gottlieb 50;174,89;15;45;3465;5
+Farrell-Powlowski Tillman;121,62;17;42;2284;5
