@@ -201,7 +201,7 @@ public class Main {
         }
     }
 
-    private static void calcularpreuCaixaBacktracking(Sabata[] sabatesArray,ArrayList<Caixa> configuracio) {
+    private static boolean calcularpreuCaixaBacktracking(Sabata[] sabatesArray,ArrayList<Caixa> configuracio) {
 
         boolean preuexces = false;
         for(int i = 0;i<configuracio.size();i++){
@@ -210,33 +210,18 @@ public class Main {
             }
             //mostrarDades(configuracio);
             if (configuracio.get(i).isDescompteDuplicat() && configuracio.get(i).isDescompteNens() && configuracio.get(i).isDescomptePI() && configuracio.get(i).getPreu() > 1000) {
-
                 System.out.println("Descartada: " + configuracio.get(i).getPreu());
                 ReseteigDades(configuracio);
-                return;
+                return true;
             }
-        }
 
-        for(int i = 0;i<configuracio.size();i++){
             if (configuracio.get(i).getPreu() > 1000) {
-                preuexces = true;
-                break;
-            }
-        }
-        //System.out.println("Size1: " + configuracio.size() + " Size2: " + configuraciooptima.size());
-        if(configuraciooptima.size() == 0 && !preuexces){
-            copiaconfiguracio(configuracio);
-        }
-        if(configuracio.size() < configuraciooptima.size() && !preuexces){
-            configuraciooptima.clear();
-            copiaconfiguracio(configuracio);
-        }
-        ReseteigDades(configuracio);
+                return true;
 
-        if(configuracio.size() == sabatesArray.length){
-            System.out.println(configuracio.size());
-            mostrarDades(configuraciooptima);
+            }
+
         }
+        return false;
     }
 
     private static void copiaconfiguracio(ArrayList<Caixa> configuracio) {
@@ -279,6 +264,7 @@ public class Main {
         if (ordre == sabatesArray.length) {
             CalcularDescomptes(configuracio);
             calcularpreuCaixa(sabatesArray,configuracio);
+            //mostrarDades(configuracio);
             ReseteigDades(configuracio);
             return;
         }
@@ -303,8 +289,13 @@ public class Main {
     }
 
     private static void enviamentCaixesBacktracking(Sabata[] sabatesArray, int ordre, ArrayList<Caixa> configuracio) {
-        if (ordre == sabatesArray.length) {
 
+        if (ordre == sabatesArray.length) {
+            ReseteigDades(configuracio);
+            CalcularDescomptes(configuracio);
+            calcularpreuCaixaBacktracking(sabatesArray,configuracio);
+            comprovarSolucio(configuracio, sabatesArray);
+            //ReseteigDades(configuracio);
             return;
         }
         // Bucle para manejar el resto de las cajas
@@ -312,11 +303,6 @@ public class Main {
             if (configuracio.get(i).getSabates().size() < 6){
                 configuracio.get(i).setSabates(sabatesArray[ordre]);
                 nIteracions++;
-
-                CalcularDescomptes(configuracio);
-                mostrarDades(configuracio);
-                //calcularpreuCaixaBacktracking(sabatesArray,configuracio);
-                //ReseteigDades(configuracio);
 
                 enviamentCaixesBacktracking(sabatesArray, ordre + 1, configuracio);
                 configuracio.get(i).getSabates().remove(sabatesArray[ordre]);
@@ -329,12 +315,35 @@ public class Main {
         //nuevaCaixa.setPreu(sabatesArray[ordre].getPreu());
         configuracio.add(nuevaCaixa);
         nIteracions++;
+        CalcularDescomptes(configuracio);
+
+        if (calcularpreuCaixaBacktracking(sabatesArray,configuracio)){
+            ReseteigDades(configuracio);
+            configuracio.remove(configuracio.size() - 1);
+            return;
+        }
+
         enviamentCaixesBacktracking(sabatesArray, ordre + 1, configuracio);
         configuracio.remove(configuracio.size() - 1);
     }
 
+    private static void comprovarSolucio(ArrayList<Caixa> configuracio, Sabata[] sabatesArray) {
+        if(configuraciooptima.size() == 0){
+            copiaconfiguracio(configuracio);
+        }
+        if(configuracio.size() < configuraciooptima.size()){
+            configuraciooptima.clear();
+            copiaconfiguracio(configuracio);
+        }
+
+        if(configuracio.size() == sabatesArray.length){
+            System.out.println(configuracio.size());
+            mostrarDades(configuraciooptima);
+        }
+    }
+
     private static void enviamentCaixesBranchAndBound(Sabata[] sabatesArray, int ordre, ArrayList<Caixa> configuracio) {
-        
+
 
     }
 
