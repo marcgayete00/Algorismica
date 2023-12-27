@@ -202,24 +202,21 @@ public class Main {
     }
 
     private static boolean calcularpreuCaixaBacktracking(Sabata[] sabatesArray,ArrayList<Caixa> configuracio) {
-
-        boolean preuexces = false;
+        int contadorzapatos = 0;
         for(int i = 0;i<configuracio.size();i++){
+            contadorzapatos += configuracio.get(i).getSabates().size();
             for(int j = 0;j<configuracio.get(i).getSabates().size();j++){
                 configuracio.get(i).setPreu(configuracio.get(i).getPreu() + (configuracio.get(i).getSabates().get(j).getPreu() - configuracio.get(i).getSabates().get(j).getDescompte()));
             }
             //mostrarDades(configuracio);
             if (configuracio.get(i).isDescompteDuplicat() && configuracio.get(i).isDescompteNens() && configuracio.get(i).isDescomptePI() && configuracio.get(i).getPreu() > 1000) {
                 System.out.println("Descartada: " + configuracio.get(i).getPreu());
-                ReseteigDades(configuracio);
                 return true;
             }
-
-            if (configuracio.get(i).getPreu() > 1000) {
+            if((configuracio.get(i).getPreu() > 1000) && (i == configuracio.size() -1) && (contadorzapatos == sabatesArray.length)){
+                System.out.println("Descartada2: " + configuracio.get(i).getPreu());
                 return true;
-
             }
-
         }
         return false;
     }
@@ -276,9 +273,7 @@ public class Main {
                 enviamentCaixesForcaBruta(sabatesArray, ordre + 1, configuracio);
                 configuracio.get(i).getSabates().remove(sabatesArray[ordre]);
             }
-
         }
-
         Caixa nuevaCaixa = new Caixa(0, 0);
         nuevaCaixa.setSabates(sabatesArray[ordre]);
         //nuevaCaixa.setPreu(sabatesArray[ordre].getPreu());
@@ -293,8 +288,9 @@ public class Main {
         if (ordre == sabatesArray.length) {
             ReseteigDades(configuracio);
             CalcularDescomptes(configuracio);
-            calcularpreuCaixaBacktracking(sabatesArray,configuracio);
-            comprovarSolucio(configuracio, sabatesArray);
+            if(!calcularpreuCaixaBacktracking(sabatesArray,configuracio)){
+                comprovarSolucio(configuracio, sabatesArray);
+            }
             //ReseteigDades(configuracio);
             return;
         }
@@ -303,7 +299,6 @@ public class Main {
             if (configuracio.get(i).getSabates().size() < 6){
                 configuracio.get(i).setSabates(sabatesArray[ordre]);
                 nIteracions++;
-
                 enviamentCaixesBacktracking(sabatesArray, ordre + 1, configuracio);
                 configuracio.get(i).getSabates().remove(sabatesArray[ordre]);
             }
@@ -314,15 +309,13 @@ public class Main {
         nuevaCaixa.setSabates(sabatesArray[ordre]);
         //nuevaCaixa.setPreu(sabatesArray[ordre].getPreu());
         configuracio.add(nuevaCaixa);
-        nIteracions++;
         CalcularDescomptes(configuracio);
-
         if (calcularpreuCaixaBacktracking(sabatesArray,configuracio)){
             ReseteigDades(configuracio);
             configuracio.remove(configuracio.size() - 1);
             return;
         }
-
+        nIteracions++;
         enviamentCaixesBacktracking(sabatesArray, ordre + 1, configuracio);
         configuracio.remove(configuracio.size() - 1);
     }
@@ -538,6 +531,7 @@ public class Main {
                                 enviamentCaixesForcaBruta(sabatesArray, 1, configuracio);
                                 //System.out.println("Numero iteracions: " + nIteracions);
                                 System.out.println("La configuración con menos cajas tiene: " + cajastotales + " cajas");
+                                System.out.println("Numero iteracions: " + nIteracions);
                                 nIteracions = 0;
                                 cajastotales = 0;
 
@@ -551,6 +545,7 @@ public class Main {
                                 enviamentCaixesBacktracking(sabatesArray, 1, configuracio);
                                 //System.out.println("Numero iteracions: " + nIteracions);
                                 System.out.println("La configuración con menos cajas tiene: " + cajastotales + " cajas");
+                                System.out.println("Numero iteracions: " + nIteracions);
                                 nIteracions = 0;
                                 cajastotales = 0;
 
