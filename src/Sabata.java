@@ -6,8 +6,6 @@ public class Sabata {
     private int pes;
     private float puntuacio;
 
-    private boolean utilitzat = false;
-
     private float descompte = 0;
 
     private boolean descompteDuplicat;
@@ -16,19 +14,18 @@ public class Sabata {
     private boolean descomptePI;
 
 
-    public Sabata(String nom, float preu, int min_talla, int max_talla, int pes, float puntuacio, boolean utilitzat, float descompte) {
+    public Sabata(String nom, float preu, int min_talla, int max_talla, int pes, float puntuacio, float descompte, boolean descompteDuplicat, boolean descompteNens, boolean incrementPS, boolean descomptePI) {
         this.nom = nom;
         this.preu = preu;
         this.min_talla = min_talla;
         this.max_talla = max_talla;
         this.pes = pes;
         this.puntuacio = puntuacio;
-        this.utilitzat = utilitzat;
         this.descompte = descompte;
-        this.descompteDuplicat = false;
-        this.descompteNens = false;
-        this.incrementPS = false;
-        this.descomptePI = false;
+        this.descompteDuplicat = descompteDuplicat;
+        this.descompteNens = descompteNens;
+        this.incrementPS = incrementPS;
+        this.descomptePI = descomptePI;
     }
 
     public String getNom() {
@@ -55,21 +52,9 @@ public class Sabata {
         return puntuacio;
     }
 
-    public boolean getUtilitzat() {
-        return utilitzat;
-    }
 
     public float getDescompte() {
         return descompte;
-    }
-
-
-    public void setUtilitzat(boolean utilitzat) {
-        this.utilitzat = utilitzat;
-    }
-
-    public boolean isUtilitzat() {
-        return utilitzat;
     }
 
     public void setDescompte(float descompte) {
