@@ -209,14 +209,26 @@ public class Main {
                 configuracio.get(i).setPreu(configuracio.get(i).getPreu() + (configuracio.get(i).getSabates().get(j).getPreu() - configuracio.get(i).getSabates().get(j).getDescompte()));
             }
             //mostrarDades(configuracio);
+
+            if (configuracio.get(i).getPreu() > 1000){
+                return true;
+            }
+
+            /*
             if (configuracio.get(i).isDescompteDuplicat() && configuracio.get(i).isDescompteNens() && configuracio.get(i).isDescomptePI() && configuracio.get(i).getPreu() > 1000) {
-                System.out.println("Descartada: " + configuracio.get(i).getPreu());
+                //mostrarDades(configuracio);
+                //System.out.println("Descartada: " + configuracio.get(i).getPreu());
                 return true;
             }
+             */
+            /*
             if((configuracio.get(i).getPreu() > 1000) && (i == configuracio.size() -1) && (contadorzapatos == sabatesArray.length)){
-                System.out.println("Descartada2: " + configuracio.get(i).getPreu());
+                //mostrarDades(configuracio);
+                //System.out.println("Descartada2: " + configuracio.get(i).getPreu());
                 return true;
             }
+
+             */
         }
         return false;
     }
@@ -246,7 +258,6 @@ public class Main {
 
     private static void ReseteigDades(ArrayList<Caixa> configuracio) {
         for(int i = 0;i<configuracio.size();i++){
-            configuracio.get(i).setPreu(0);
             for(int j = 0;j<configuracio.get(i).getSabates().size();j++){
                 configuracio.get(i).getSabates().get(j).setDescompte(0);
                 configuracio.get(i).getSabates().get(j).setDescompteDuplicat(false);
@@ -254,6 +265,11 @@ public class Main {
                 configuracio.get(i).getSabates().get(j).setDescomptePI(false);
                 configuracio.get(i).getSabates().get(j).setIncrementPS(false);
             }
+            configuracio.get(i).setPreu(0);
+            configuracio.get(i).setDescompteDuplicat(false);
+            configuracio.get(i).setDescompteNens(false);
+            configuracio.get(i).setDescomptePI(false);
+            configuracio.get(i).setIncrementPS(false);
         }
     }
 
@@ -286,12 +302,12 @@ public class Main {
     private static void enviamentCaixesBacktracking(Sabata[] sabatesArray, int ordre, ArrayList<Caixa> configuracio) {
 
         if (ordre == sabatesArray.length) {
-            ReseteigDades(configuracio);
+            //ReseteigDades(configuracio);
             CalcularDescomptes(configuracio);
             if(!calcularpreuCaixaBacktracking(sabatesArray,configuracio)){
                 comprovarSolucio(configuracio, sabatesArray);
             }
-            //ReseteigDades(configuracio);
+            ReseteigDades(configuracio);
             return;
         }
         // Bucle para manejar el resto de las cajas

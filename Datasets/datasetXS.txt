@@ -1,4 +1,4 @@
-10
+12
 Abbott Inc Hope Ferterbest 3000;497,36;15;34;2554;3,1
 Kuhic, Goyette and Kohler Heller;374,70;16;36;2177;2,3
 Kuhic, Macejkovic and Lemke Gerhold;270,58;21;33;2047;3,7
@@ -9,3 +9,5 @@ Gerhold-Wunsch Megan Bacon;232,01;22;34;1810;2,7
 Gerhold-Wunsch Purdy;447,07;15;38;2260;2,1
 Ortiz, Stark and Kutch Dan Deline;391,41;27;55;1507;6,9
 Ortiz, O'Conner and Kshlerin Elmer Sklue;265,65;27;43;1023;9,0
+Adidas, O'Conner and Kshlerin Elmer Sklue;265,65;27;43;1023;9,0
+Nike, O'Conner and Kshlerin Elmer Sklue;265,65;27;43;1023;9,0
