@@ -2,30 +2,49 @@ import java.util.ArrayList;
 
 public class CuaPrioritat {
 
-    private static ArrayList<Caixa> cua;
+    private static ArrayList<Configuracio> cua;
 
-    public CuaPrioritat(ArrayList<Caixa> cua) {
-        this.cua = new ArrayList<Caixa>();
+
+    public CuaPrioritat(Configuracio cua) {
+        this.cua = new ArrayList<Configuracio>();
     }
 
-    public static ArrayList<Caixa> getCua() {
+    public static ArrayList<Configuracio> getCua() {
         return cua;
     }
 
-    public static void setCua(ArrayList<Caixa> cua) {
+
+
+
+
+
+
+    public static void setCua(ArrayList<Configuracio> cua) {
         CuaPrioritat.cua = cua;
     }
 
 
-    public void afegir(ArrayList<Caixa> configuracio, int prioritat) {
+    public void afegir(Configuracio configuracio, int prioritat) {
         if (prioritat == 0) {
-            cua.add(new Caixa(configuracio, prioritat));
+            cua.add(configuracio);
         } else {
-            int i = 0;
-            while (i < cua.size() && cua.get(i). < prioritat) {
-                i++;
-            }
-            cua.add(i, new Caixa(configuracio, prioritat));
+            cua.add(prioritat, configuracio);
         }
+    }
+
+    public boolean isEmpty() {
+        return cua.isEmpty();
+    }
+
+    public int treurelementprioritari() {
+        int indice = 0;
+        int prioritat = 0;
+        for(int i = 0; i < cua.size(); i++) {
+            if (cua.get(i).getPrioritat() > prioritat) {
+                indice = i;
+                prioritat = cua.get(i).getPrioritat();
+            }
+        }
+        return indice;
     }
 }

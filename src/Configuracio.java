@@ -19,6 +19,10 @@ public class Configuracio {
         this.caixes = caixes;
     }
 
+    public int getPrioritat() {
+        return prioritat;
+    }
+
     public void afegirCaixa(Caixa caixa) {
         caixes.add(caixa);
     }
