@@ -13,23 +13,13 @@ public class CuaPrioritat {
         return cua;
     }
 
-
-
-
-
-
-
     public static void setCua(ArrayList<Configuracio> cua) {
         CuaPrioritat.cua = cua;
     }
 
 
     public void afegir(Configuracio configuracio, int prioritat) {
-        if (prioritat == 0) {
-            cua.add(configuracio);
-        } else {
-            cua.add(prioritat, configuracio);
-        }
+        cua.add(configuracio);
     }
 
     public boolean isEmpty() {
@@ -46,5 +36,9 @@ public class CuaPrioritat {
             }
         }
         return indice;
+    }
+
+    public void eliminarelementprioritari(int indice) {
+        cua.remove(indice);
     }
 }

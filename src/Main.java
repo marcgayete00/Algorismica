@@ -334,27 +334,37 @@ public class Main {
         configuracio.eliminarCaixa(configuracio.getCaixes().size() - 1);
     }
 
-    private static Configuracio enviamentCaixesBranchAndBound(Sabata[] sabatesArray, int ordre, Configuracio configuracio,CuaPrioritat cua) {
+    private static Configuracio enviamentCaixesBranchAndBound(Sabata[] sabatesArray, Configuracio configuracio, CuaPrioritat cua) {
         cua.afegir(configuracio,0);
-        ArrayList<Configuracio> llistaelements = new ArrayList<>();
+        ArrayList<Configuracio> llistaelements;
         int indiceprioritario;
-        float minim;
-        Configuracio configuracioactual = new Configuracio(new ArrayList<Caixa>(),0);
+        float minim = 1000000000;
+        Configuracio configuracioactual = new Configuracio(new ArrayList<>(),0);
         while(!cua.isEmpty()){
             indiceprioritario = cua.treurelementprioritari();
             copiaconfiguracioBB(indiceprioritario, configuracioactual);
+            cua.eliminarelementprioritari(indiceprioritario);
             mostrarDades(configuracioactual);
             llistaelements = expandir(configuracioactual,sabatesArray);
+            /*for (int i = 0; i < llistaelements.size(); i++) {
+                for(int j = 0;j<llistaelements.get(i).getCaixes().size();j++){
+                    System.out.println("Caja "+j);
+                    for (int k = 0; k < llistaelements.get(i).getCaixes().get(j).getSabates().size(); k++) {
+                        System.out.print("Sabata "+llistaelements.get(i).getCaixes().get(j).getSabates().get(k).getNom() + " ");
+                        System.out.println(llistaelements.get(i).getCaixes().get(j).getSabates().get(k).getPreu() + " | " +llistaelements.get(i).getCaixes().get(j).getSabates().get(k).getDescompte());
+                    }
+                }
+            }*/
             for(int i = 0;i<llistaelements.size();i++){
 
                 if(configuracioComplerta(llistaelements.get(i),sabatesArray)){
                     if(llistaelements.get(i).getCaixes().size() < minim){
-                        configuraciooptima = copiaconfiguracio(llistaelements.get(i));
+                        copiaconfiguracio(llistaelements.get(i));
                         minim = llistaelements.get(i).getCaixes().size();
                     }
                 }else{
-                    if(estimacio(llistaelements.get(i)) < minim){
-                        cua.afegir(llistaelements.get(i),estimacio(llistaelements.get(i)));
+                    if(estimacio(llistaelements.get(i),sabatesArray) < minim){
+                        cua.afegir(llistaelements.get(i),estimacio(llistaelements.get(i),sabatesArray));
                     }
                 }
             }
@@ -362,7 +372,17 @@ public class Main {
         return configuracioactual;
     }
 
-    private static int estimacio(Configuracio configuracio) {
+    private static int estimacio(Configuracio configuracio, Sabata[] sabatesArray) {
+        // Calcula la cantidad de zapatos que quedan por asignar
+        int zapatosRestantes = 0;
+        for(int i = 0;i<configuracio.getCaixes().size();i++){
+            zapatosRestantes += configuracio.getCaixes().get(i).getSabates().size();
+        }
+
+        // Pondera la cantidad de cajas en función de los zapatos restantes
+        int estimacion = configuracio.getCaixes().size() * (1 + zapatosRestantes);
+        System.out.println("Estimacion: " + estimacion);
+        return estimacion;
     }
 
     private static boolean configuracioComplerta(Configuracio configuracio, Sabata[] sabatesArray) {
@@ -379,7 +399,10 @@ public class Main {
     private static Configuracio copiaconfiguracioBB(int indiceprioritario, Configuracio configuracio) {
         Caixa nuevaCaixa;
         Sabata nuevaSabata;
-        for (int i = 0; i < CuaPrioritat.getCua().get(indiceprioritario).getCaixes().size(); i++) {
+        System.out.println("Indice prioritario: " + indiceprioritario);
+        System.out.println("Tamaño de la cola: " + CuaPrioritat.getCua().size());
+        System.out.println("Tamaño de la cola2: " + CuaPrioritat.getCua().get(indiceprioritario).getCaixes().size());
+        for (int i = 0; i < CuaPrioritat.getCua().size(); i++) {
             nuevaCaixa = new Caixa(0, CuaPrioritat.getCua().get(indiceprioritario).getCaixes().get(i).getPreu());
             for (int j = 0; j < CuaPrioritat.getCua().get(indiceprioritario).getCaixes().get(i).getSabates().size(); j++) {
                 nuevaSabata = new Sabata(CuaPrioritat.getCua().get(indiceprioritario).getCaixes().get(i).getSabates().get(j).getNom(),
@@ -400,17 +423,66 @@ public class Main {
         return configuracio;
     }
 
-    private static ArrayList<Configuracio> expandir(Configuracio configuracioinicial,Sabata[] sabatesArray){
+    private static ArrayList<Configuracio> expandir(Configuracio configuracioActual, Sabata[] sabatesArray) {
         ArrayList<Configuracio> llistaelements = new ArrayList<>();
-        Configuracio novaconfiguracio;
-        for(int i = 0;i<configuracioinicial.getCaixes().size();i++){
-            if(configuracioinicial.getCaixes().get(i).getSabates().size() < 6){
-                novaconfiguracio = copiaconfiguracioBB(i,configuracioinicial);
-                novaconfiguracio.getCaixes().get(novaconfiguracio.getCaixes().size() - 1).setSabates(sabatesArray[i]);
-                llistaelements.add(novaconfiguracio);
+
+        // Recorre todas las cajas en la configuración actual
+        for (int i = 0; i < configuracioActual.getCaixes().size(); i++) {
+            // Verifica si la caja actual tiene espacio para más zapatos
+            if (configuracioActual.getCaixes().get(i).getSabates().size() < 6) {
+                // Itera sobre los zapatos disponibles
+                for (int j = 0; j < sabatesArray.length; j++) {
+                    // Verifica si el zapato no ha sido asignado a ninguna caja
+                    if (!estaEnCajas(sabatesArray[j], configuracioActual)) {
+                        // Crea una nueva configuración copiando la actual
+                        Configuracio novaconfiguracio = copiaNovaConfiguracio(configuracioActual);
+
+                        // Añade el zapato a la caja actual
+                        novaconfiguracio.getCaixes().get(i).setSabates(sabatesArray[j]);
+
+                        // Agrega la nueva configuración a la lista de elementos
+                        llistaelements.add(novaconfiguracio);
+                    }
+                }
             }
         }
+
         return llistaelements;
+    }
+
+    private static Configuracio copiaNovaConfiguracio(Configuracio configuracioActual) {
+        Configuracio novaconfiguracio = new Configuracio(new ArrayList<>(), 0);
+        Caixa nuevaCaixa;
+        Sabata nuevaSabata;
+        for (int i = 0; i < configuracioActual.getCaixes().size(); i++) {
+            nuevaCaixa = new Caixa(0, configuracioActual.getCaixes().get(i).getPreu());
+            for (int j = 0; j < configuracioActual.getCaixes().get(i).getSabates().size(); j++) {
+                nuevaSabata = new Sabata(configuracioActual.getCaixes().get(i).getSabates().get(j).getNom(),
+                        configuracioActual.getCaixes().get(i).getSabates().get(j).getPreu(),
+                        configuracioActual.getCaixes().get(i).getSabates().get(j).getMin_talla(),
+                        configuracioActual.getCaixes().get(i).getSabates().get(j).getMax_talla(),
+                        configuracioActual.getCaixes().get(i).getSabates().get(j).getPes(),
+                        configuracioActual.getCaixes().get(i).getSabates().get(j).getPuntuacio(),
+                        configuracioActual.getCaixes().get(i).getSabates().get(j).getDescompte(),
+                        configuracioActual.getCaixes().get(i).getSabates().get(j).isDescompteDuplicat(),
+                        configuracioActual.getCaixes().get(i).getSabates().get(j).isDescompteNens(),
+                        configuracioActual.getCaixes().get(i).getSabates().get(j).isIncrementPS(),
+                        configuracioActual.getCaixes().get(i).getSabates().get(j).isDescomptePI());
+                nuevaCaixa.setSabates(nuevaSabata);
+            }
+            novaconfiguracio.afegirCaixa(nuevaCaixa);
+        }
+        return novaconfiguracio;
+    }
+
+    // Verifica si un zapato está presente en alguna caja de la configuración
+    private static boolean estaEnCajas(Sabata sabata, Configuracio configuracio) {
+        for (Caixa caixa : configuracio.getCaixes()) {
+            if (caixa.getSabates().contains(sabata)) {
+                return true;
+            }
+        }
+        return false;
     }
 /*
     private static Configuracio enviamentCaixesBranchAndBound(Sabata[] sabatesArray, int ordre, Configuracio configuracio) {
@@ -698,7 +770,8 @@ public class Main {
                                 //configuracio.get(0).setPreu(sabatesArray[0].getPreu());
                                 CuaPrioritat cua = new CuaPrioritat(configuracio);
 
-                                enviamentCaixesBranchAndBound(sabatesArray, 1, configuracio,cua);
+                                enviamentCaixesBranchAndBound(sabatesArray, configuracio,cua);
+                                mostrarDades(configuracio);
                                 //System.out.println("Numero iteracions: " + nIteracions);
                                 System.out.println("La configuración con menos cajas tiene: " + cajastotales + " cajas");
 
