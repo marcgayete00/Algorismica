@@ -1,5 +1,7 @@
 public class Sabata {
     private String nom;
+
+    private String nomcomplet;
     private float preu;
     private int min_talla;
     private int max_talla;
@@ -14,8 +16,9 @@ public class Sabata {
     private boolean descomptePI;
 
 
-    public Sabata(String nom, float preu, int min_talla, int max_talla, int pes, float puntuacio, float descompte, boolean descompteDuplicat, boolean descompteNens, boolean incrementPS, boolean descomptePI) {
+    public Sabata(String nom,String nomcomplet, float preu, int min_talla, int max_talla, int pes, float puntuacio, float descompte, boolean descompteDuplicat, boolean descompteNens, boolean incrementPS, boolean descomptePI) {
         this.nom = nom;
+        this.nomcomplet = nomcomplet;
         this.preu = preu;
         this.min_talla = min_talla;
         this.max_talla = max_talla;
@@ -30,6 +33,10 @@ public class Sabata {
 
     public String getNom() {
         return nom;
+    }
+
+    public String getNomComplet() {
+        return nomcomplet;
     }
 
     public float getPreu() {
