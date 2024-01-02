@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Comparator;
 
 public class CuaPrioritat {
 
@@ -28,9 +29,9 @@ public class CuaPrioritat {
 
     public int treurelementprioritari() {
         int indice = 0;
-        int prioritat = 0;
+        int prioritat = 10;
         for(int i = 0; i < cua.size(); i++) {
-            if (cua.get(i).getPrioritat() > prioritat) {
+            if (cua.get(i).getPrioritat() < prioritat) {
                 indice = i;
                 prioritat = cua.get(i).getPrioritat();
             }
@@ -40,5 +41,22 @@ public class CuaPrioritat {
 
     public void eliminarelementprioritari(int indice) {
         cua.remove(indice);
+    }
+
+    public boolean comprovar(int size) {
+        //cua.sort(Comparator.comparingDouble(Configuracio::getPrioritat).reversed());  // Ordenar de mayor a menor precio
+        //System.out.println("Cola 0: " + cua.get(0).getPrioritat());
+        boolean flag = false;
+        for(int i = 0; i < cua.size(); i++) {
+            if (cua.get(i).getPrioritat() < size) {
+                flag = true;
+                break;
+            }
+        }
+        return flag;
+    }
+
+    public void clear() {
+        cua.clear();
     }
 }
