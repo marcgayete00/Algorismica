@@ -356,7 +356,7 @@ public class Main {
         cua.afegir(configuracio,0);
         ArrayList<Configuracio> llistaelements;
         int indiceprioritario;
-        int minim = (sabatesArray.length/6) + 2;
+        int minim = (int) Math.ceil(((double) sabatesArray.length /6) + 2);
         Configuracio configuracioactual = new Configuracio(new ArrayList<>(),0);
         while(!cua.isEmpty()){
             indiceprioritario = cua.treurelementprioritari();
@@ -365,21 +365,24 @@ public class Main {
             //mostrarDades(configuracioactual);
             llistaelements = expandir(configuracioactual,sabatesArray); //Crear los hijos de esa configuracion
 
-            /*for (int i = 0; i < llistaelements.size(); i++) {
-                System.out.println("-----------------------");
-                for(int j = 0;j<llistaelements.get(i).getCaixes().size();j++){
-                    System.out.println("Caja "+j);
-                    for (int k = 0; k < llistaelements.get(i).getCaixes().get(j).getSabates().size(); k++) {
-                        System.out.print("Sabata "+llistaelements.get(i).getCaixes().get(j).getSabates().get(k).getNom() + " ");
-                        System.out.println(llistaelements.get(i).getCaixes().get(j).getSabates().get(k).getPreu() + " | " +llistaelements.get(i).getCaixes().get(j).getSabates().get(k).getDescompte());
-                    }
-                }
-            }*/
+
 
             for(int i = 0;i<llistaelements.size();i++){
                 if(configuracioComplerta(llistaelements.get(i),sabatesArray)){
                     if(llistaelements.get(i).getCaixes().size() < minim){
+
                         CalcularDescomptes(llistaelements.get(i));
+                        for (int k = 0; k < llistaelements.size(); k++) {
+                            System.out.println("-----------------------");
+                            for(int j = 0;j<llistaelements.get(k).getCaixes().size();j++){
+                                System.out.println("Caja "+j);
+                                for (int z = 0; z < llistaelements.get(k).getCaixes().get(j).getSabates().size(); z++) {
+                                    System.out.print("Sabata "+llistaelements.get(k).getCaixes().get(j).getSabates().get(z).getNom() + " ");
+                                    System.out.println(llistaelements.get(k).getCaixes().get(j).getSabates().get(z).getPreu() + " | " +llistaelements.get(k).getCaixes().get(j).getSabates().get(z).getDescompte());
+                                }
+                                System.out.println("Preu "+llistaelements.get(k).getCaixes().get(j).getPreu());
+                            }
+                        }
                         if(!calcularpreuCaixaBB(llistaelements.get(i))){
                             copiaconfiguracio(llistaelements.get(i));
                             minim = llistaelements.get(i).getCaixes().size();
@@ -403,7 +406,7 @@ public class Main {
 
         // Verificar si el precio de las cajas supera el límite
         if (!calcularpreuCaixaBB(configuracionActual)) {
-            mostrarDades(configuracionActual);
+            //mostrarDades(configuracionActual);
             ReseteigDades(configuracionActual);
 
             // Contar zapatos restantes
@@ -473,13 +476,12 @@ public class Main {
     private static ArrayList<Configuracio> expandir(Configuracio configuracioInicial, Sabata[] sabatesArray) {
         ArrayList<Configuracio> llistaelements = new ArrayList<>();
         //System.out.println("Cajas Nova: " + novaconfiguracio.getCaixes().size());
-        for (int i = 0; i < configuracioInicial.getCaixes().size(); i++) {
+        for (int i = configuracioInicial.getCaixes().size()-1; i < configuracioInicial.getCaixes().size(); i++) {
             System.out.println("Caja Nova: " + i);
             for (int j = 0; j < sabatesArray.length; j++) {
                 if (!estaEnCajas(sabatesArray[j], configuracioInicial)) {
                     if (configuracioInicial.getCaixes().get(i).getSabates().size() < 6) {
                         Configuracio novaconfiguracio = copiaNovaConfiguracio(configuracioInicial);
-
                         novaconfiguracio.getCaixes().get(i).setSabates(sabatesArray[j]);
                         //mostrarDades(novaconfiguracio);
                         llistaelements.add(novaconfiguracio);
