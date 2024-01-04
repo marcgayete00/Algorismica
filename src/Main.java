@@ -371,6 +371,7 @@ public class Main {
                     if(llistaelements.get(i).getCaixes().size() < minim){
 
                         CalcularDescomptes(llistaelements.get(i));
+                        /*
                         for (int k = 0; k < llistaelements.size(); k++) {
                             System.out.println("-----------------------");
                             for(int j = 0;j<llistaelements.get(k).getCaixes().size();j++){
@@ -382,6 +383,8 @@ public class Main {
                                 System.out.println("Preu "+llistaelements.get(k).getCaixes().get(j).getPreu());
                             }
                         }
+
+                         */
                         if(!calcularpreuCaixaBB(llistaelements.get(i))){
                             System.out.println("Entra");
                             copiaconfiguracio(llistaelements.get(i));
