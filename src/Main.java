@@ -236,7 +236,8 @@ public class Main {
             }
             if (configuracio.getCaixes().get(i).isDescompteDuplicat() && configuracio.getCaixes().get(i).isDescompteNens() && configuracio.getCaixes().get(i).isDescomptePI() && configuracio.getCaixes().get(i).getPreu() > 1000) {
                 return true;
-            }else if((configuracio.getCaixes().get(i).getPreu() > 1000) && configuracio.getCaixes().get(i).getSabates().size() >= 4){
+                //COMENTAR CON 4 HACE 55000 ITERACIONES Y CON 3 HACE 27374
+            }else if((configuracio.getCaixes().get(i).getPreu() > 1000) && configuracio.getCaixes().get(i).getSabates().size() >= 3) {
                 return true;
             }
 
@@ -356,7 +357,7 @@ public class Main {
         cua.afegir(configuracio,0);
         ArrayList<Configuracio> llistaelements;
         int indiceprioritario;
-        int minim = (int) Math.ceil(((double) sabatesArray.length /6) + 3);
+        int minim = (int) Math.ceil(((double) sabatesArray.length /6) + 2);
         Configuracio configuracioactual = new Configuracio(new ArrayList<>(),0);
         while(!cua.isEmpty()){
             nIteracions++;
@@ -481,16 +482,30 @@ public class Main {
 
     private static ArrayList<Configuracio> expandir(Configuracio configuracioInicial, Sabata[] sabatesArray) {
         ArrayList<Configuracio> llistaelements = new ArrayList<>();
+        int indice = 0;
         //System.out.println("Cajas Nova: " + novaconfiguracio.getCaixes().size());
-        for (int i = 0; i < configuracioInicial.getCaixes().size(); i++) {
+        if (configuracioInicial.getCaixes().size() != 0) {
+            indice = configuracioInicial.getCaixes().size()-1;
+        }
+        for (int i = indice; i < configuracioInicial.getCaixes().size(); i++) {
             //System.out.println("Caja Nova: " + i);
             for (int j = 0; j < sabatesArray.length; j++) {
                 if (!estaEnCajas(sabatesArray[j], configuracioInicial)) {
                     if (configuracioInicial.getCaixes().get(i).getSabates().size() < 6) {
                         Configuracio novaconfiguracio = copiaNovaConfiguracio(configuracioInicial);
                         novaconfiguracio.getCaixes().get(i).setSabates(sabatesArray[j]);
-                        //mostrarDades(novaconfiguracio);
-                        llistaelements.add(novaconfiguracio);
+                        CalcularDescomptes(novaconfiguracio);
+                        if(calcularpreuCaixaBB(novaconfiguracio)){
+                            novaconfiguracio.getCaixes().get(i).getSabates().remove(sabatesArray[j]);
+                            Caixa nuevaCaixa = new Caixa(0, 0);
+                            nuevaCaixa.setSabates(sabatesArray[j]);
+                            configuracioInicial.afegirCaixa(nuevaCaixa);
+                            llistaelements.add(configuracioInicial);
+                            break;
+                        }else{
+                            ReseteigDades(novaconfiguracio);
+                            llistaelements.add(novaconfiguracio);
+                        }
                     }else{
                         Caixa nuevaCaixa = new Caixa(0, 0);
                         nuevaCaixa.setSabates(sabatesArray[j]);
@@ -745,6 +760,7 @@ public class Main {
                                 configuracio.getCaixes().get(0).setSabates(sabatesArray[0]);
                                 //configuracio.get(0).setPreu(sabatesArray[0].getPreu());
                                 enviamentCaixesForcaBruta(sabatesArray, 1, configuracio);
+                                configuraciooptima = new Configuracio(new ArrayList<Caixa>(), 0);
                                 //System.out.println("Numero iteracions: " + nIteracions);
                                 System.out.println("La configuración con menos cajas tiene: " + cajastotales + " cajas");
                                 System.out.println("Numero iteracions: " + nIteracions);
@@ -759,6 +775,8 @@ public class Main {
                                 configuracio.getCaixes().get(0).setSabates(sabatesArray[0]);
                                 //configuracio.get(0).setPreu(sabatesArray[0].getPreu());
                                 enviamentCaixesBacktracking(sabatesArray, 1, configuracio);
+                                configuraciooptima = new Configuracio(new ArrayList<Caixa>(), 0);
+
                                 //System.out.println("Numero iteracions: " + nIteracions);
                                 System.out.println("La configuración con menos cajas tiene: " + cajastotales + " cajas");
                                 System.out.println("Numero iteracions: " + nIteracions);
@@ -776,6 +794,7 @@ public class Main {
 
                                 enviamentCaixesBranchAndBound(sabatesArray, configuracio,cua);
                                 mostrarDades(configuraciooptima);
+                                configuraciooptima = new Configuracio(new ArrayList<Caixa>(), 0);
                                 System.out.println("Numero iteracions: " + nIteracions);
                                 System.out.println("La configuración con menos cajas tiene: " + cajastotales + " cajas");
 
