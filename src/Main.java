@@ -15,7 +15,7 @@ public class Main {
 
     public static Sabata[] lecturaFitxer(){
         try {
-            File myObj = new File("Datasets/datasetXS.txt");
+            File myObj = new File("Datasets/datasetS.txt");
             Scanner myReader = new Scanner(myObj);
 
             nSabatesFitxer = Integer.parseInt(myReader.nextLine());
@@ -87,8 +87,6 @@ public class Main {
 
     private static void CalcularDescomptes(Configuracio configuracio) {
         ArrayList<TipusDescompte> tipusDescomptes = new ArrayList<>();
-
-
         //Descompte 20% marca duplicada
         for (int i = 0; i<configuracio.getCaixes().size(); i++){
             ArrayList<TipusDescompte> tipusDescomptesNens = new ArrayList<>();
@@ -100,9 +98,13 @@ public class Main {
 
                     for (int k = 0; k < configuracio.getCaixes().get(i).getSabates().size(); k++) {
 
-                        if (configuracio.getCaixes().get(i).getSabates().get(j).getNom().equals(configuracio.getCaixes().get(i).getSabates().get(k).getNom()) && j != k && configuracio.getCaixes().get(i).getSabates().get(j).getDescompte() == 0) {
+                        if (configuracio.getCaixes().get(i).getSabates().get(j).getNom().equals(
+                                configuracio.getCaixes().get(i).getSabates().get(k).getNom()) && j != k &&
+                                configuracio.getCaixes().get(i).getSabates().get(j).getDescompte() == 0) {
                             if (!configuracio.getCaixes().get(i).getSabates().get(j).isDescompteDuplicat()) {
-                                configuracio.getCaixes().get(i).getSabates().get(j).setDescompte(configuracio.getCaixes().get(i).getSabates().get(j).getDescompte() + (configuracio.getCaixes().get(i).getSabates().get(j).getPreu() * 0.2f));
+                                configuracio.getCaixes().get(i).getSabates().get(j).setDescompte(
+                                        configuracio.getCaixes().get(i).getSabates().get(j).getDescompte() +
+                                                (configuracio.getCaixes().get(i).getSabates().get(j).getPreu() * 0.2f));
                                 configuracio.getCaixes().get(i).getSabates().get(j).setDescompteDuplicat(true);
                                 configuracio.getCaixes().get(i).setDescompteDuplicat(true);
                             }
@@ -217,10 +219,6 @@ public class Main {
                 //mostrarDades(configuracio);
                 //System.out.println("Descartada: " + configuracio.get(i).getPreu());
                 return true;
-            }else if((configuracio.getCaixes().get(i).getPreu() > 1000) && configuracio.getCaixes().get(i).getSabates().size() >= 4){
-                //mostrarDades(configuracio);
-                //System.out.println("Descartada2: " + configuracio.get(i).getPreu());
-                return true;
             }
 
 
@@ -320,9 +318,7 @@ public class Main {
         if (ordre == sabatesArray.length) {
             //ReseteigDades(configuracio);
             CalcularDescomptes(configuracio);
-            if(!calcularpreuCaixaBacktracking(sabatesArray,configuracio)){
-                comprovarSolucio(configuracio, sabatesArray);
-            }
+            calcularpreuCaixa(sabatesArray,configuracio);
             ReseteigDades(configuracio);
             return;
         }
@@ -347,6 +343,7 @@ public class Main {
             configuracio.eliminarCaixa(configuracio.getCaixes().size() - 1);
             return;
         }
+        ReseteigDades(configuracio);
         nIteracions++;
         System.out.println(nIteracions);
         enviamentCaixesBacktracking(sabatesArray, ordre + 1, configuracio);
