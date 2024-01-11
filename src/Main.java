@@ -529,7 +529,7 @@ public class Main {
         return novaconfiguracio;
     }
 
-    // Verifica si una sabata ja es present a alguna caixa de la configuració
+    // Verifica si una sabata ja és present a alguna caixa de la configuració
     private static boolean esACaixes(Sabata sabata, Configuracio configuracio) {
         for (int i = 0; i < configuracio.getCaixes().size(); i++) {
             for (int j = 0; j < configuracio.getCaixes().get(i).getSabates().size(); j++) {
