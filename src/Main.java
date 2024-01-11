@@ -602,16 +602,16 @@ public class Main {
 
         ArrayList<Sabata> inventari1 = new ArrayList<>();
         ArrayList<Sabata> inventari2 = new ArrayList<>();
-        int costInvetari1 = 0;
-        int costInvetari2 = 0;
+        float costInvetari1 = 0;
+        float costInvetari2 = 0;
 
-        for (int i = 0; i < sabatesArray.length; i++) {
+        for (int i = 0; i < sabatesLlista.size(); i++) {
             if (costInvetari1 <= costInvetari2) {
-                inventari1.add(sabatesArray[i]);
-                costInvetari1 += sabatesArray[i].getPreu();
+                inventari1.add(sabatesLlista.get(i));
+                costInvetari1 += sabatesLlista.get(i).getPreu();
             } else {
-                inventari2.add(sabatesArray[i]);
-                costInvetari2 += sabatesArray[i].getPreu();
+                inventari2.add(sabatesLlista.get(i));
+                costInvetari2 += sabatesLlista.get(i).getPreu();
             }
         }
 
