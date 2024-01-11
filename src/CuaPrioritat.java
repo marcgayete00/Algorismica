@@ -1,11 +1,10 @@
 import java.util.ArrayList;
 
-// TODO: S'ha de mirar aquesta classe. Hi ha funcions que reben variables que després no utilitzen
 // TODO: Mirar perquè la variable cua és estàtica
 public class CuaPrioritat {
     private static ArrayList<Configuracio> cua;
 
-    public CuaPrioritat(Configuracio cua) {
+    public CuaPrioritat() {
         this.cua = new ArrayList<Configuracio>();
     }
 
@@ -13,11 +12,7 @@ public class CuaPrioritat {
         return cua;
     }
 
-    public static void setCua(ArrayList<Configuracio> cua) {
-        CuaPrioritat.cua = cua;
-    }
-
-    public void afegir(Configuracio configuracio, int prioritat) {
+    public void afegir(Configuracio configuracio) {
         cua.add(configuracio);
     }
 

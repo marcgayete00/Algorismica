@@ -13,10 +13,6 @@ public class Configuracio {
         return caixes;
     }
 
-    public void setCaixes(ArrayList<Caixa> caixes) {
-        this.caixes = caixes;
-    }
-
     public int getPrioritat() {
         return prioritat;
     }

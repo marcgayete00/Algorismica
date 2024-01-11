@@ -29,14 +29,6 @@ public class ConfDivInv {
         return preuInvetari2;
     }
 
-    public void setInventari1(Sabata sabata) {
-        this.inventari1.add(sabata);
-    }
-
-    public void setInventari2(Sabata sabata) {
-        this.inventari2.add(sabata);
-    }
-
     public void setPreuInvetari1(double preuInvetari1) {
         this.preuInvetari1 = preuInvetari1;
     }

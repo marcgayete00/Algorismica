@@ -63,10 +63,6 @@ public class Sabata {
         this.descompte = descompte;
     }
 
-    public void setPreu(float nouPreu) {
-        this.preu = nouPreu;
-    }
-
     public boolean isDescompteDuplicat() {
         return descompteDuplicat;
     }
