@@ -208,7 +208,7 @@ public class Main {
 
     private static boolean calcularPreuCaixaBacktracking(Configuracio configuracio) {
         for (int i = 0; i < configuracio.getCaixes().size(); i++) {
-            for (int j = 0; j<configuracio.getCaixes().get(i).getSabates().size(); j++) {
+            for (int j = 0; j < configuracio.getCaixes().get(i).getSabates().size(); j++) {
                 configuracio.getCaixes().get(i).setPreu(configuracio.getCaixes().get(i).getPreu() + (configuracio.getCaixes().get(i).getSabates().get(j).getPreu() - configuracio.getCaixes().get(i).getSabates().get(j).getDescompte()));
             }
 
