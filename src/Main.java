@@ -412,8 +412,8 @@ public class Main {
             }
 
             System.out.println("Sabates restants: " + sabatesRestants);
-            System.out.println("Caixes necessaries: " + caixesNecessaries);
-            System.out.println("Estimacio: " + (configuracioActual.getCaixes().size() + caixesNecessaries));
+            System.out.println("Caixes necessàries: " + caixesNecessaries);
+            System.out.println("Estimació: " + (configuracioActual.getCaixes().size() + caixesNecessaries));
 
             return (configuracioActual.getCaixes().size() + caixesNecessaries);
         } else {
