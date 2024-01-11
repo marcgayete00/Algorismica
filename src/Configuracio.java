@@ -1,9 +1,7 @@
 import java.util.ArrayList;
 
 public class Configuracio {
-
     ArrayList<Caixa> caixes;
-
     int prioritat;
 
     public Configuracio(ArrayList<Caixa> caixes, int prioritat) {

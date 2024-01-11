@@ -1,33 +1,25 @@
 import java.util.ArrayList;
 
 public class Caixa {
-
-    private ArrayList<Sabata> Sabates;
-
+    private ArrayList<Sabata> sabates;
     private int[] numSabatesMarques;
-
     private int numSabatesNens;
-
     private int numSabatesPA;
-
     private int numSabatesPB;
-
-    private int Pes;
-
-    private float Preu;
-
+    private int pes;
+    private float preu;
     private boolean descompteDuplicat;
     private boolean descompteNens;
     private boolean incrementPS;
     private boolean descomptePI;
 
-    public Caixa(int Pes, float Preu) {
-        this.Sabates = new ArrayList<Sabata>();
+    public Caixa(int pes, float preu) {
+        this.sabates = new ArrayList<Sabata>();
         this.numSabatesNens = 0;
         this.numSabatesPA = 0;
         this.numSabatesPB = 0;
-        this.Pes = Pes;
-        this.Preu = Preu;
+        this.pes = pes;
+        this.preu = preu;
         this.descompteDuplicat = false;
         this.descompteNens = false;
         this.incrementPS = false;
@@ -35,15 +27,15 @@ public class Caixa {
     }
 
     public ArrayList<Sabata> getSabates() {
-        return Sabates;
+        return sabates;
     }
 
     public int getPes() {
-        return Pes;
+        return pes;
     }
 
     public float getPreu() {
-        return Preu;
+        return preu;
     }
 
     public int getNumSabatesNens() {
@@ -74,17 +66,16 @@ public class Caixa {
         this.numSabatesPA = numSabatesPA;
     }
 
-
-    public void setSabates(Sabata Sabata) {
-        this.Sabates.add(Sabata);
+    public void setSabates(Sabata sabata) {
+        this.sabates.add(sabata);
     }
 
-    public void setPes(int Pes) {
-        this.Pes = Pes;
+    public void setPes(int pes) {
+        this.pes = pes;
     }
 
-    public void setPreu(float Preu) {
-        this.Preu = Preu;
+    public void setPreu(float preu) {
+        this.preu = preu;
     }
 
     public boolean isDescompteDuplicat() {

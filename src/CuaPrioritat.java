@@ -1,10 +1,9 @@
 import java.util.ArrayList;
-import java.util.Comparator;
 
+// TODO: S'ha de mirar aquesta classe. Hi ha funcions que reben variables que després no utilitzen
+// TODO: Mirar perquè la variable cua és estàtica
 public class CuaPrioritat {
-
     private static ArrayList<Configuracio> cua;
-
 
     public CuaPrioritat(Configuracio cua) {
         this.cua = new ArrayList<Configuracio>();
@@ -18,7 +17,6 @@ public class CuaPrioritat {
         CuaPrioritat.cua = cua;
     }
 
-
     public void afegir(Configuracio configuracio, int prioritat) {
         cua.add(configuracio);
     }
@@ -27,36 +25,38 @@ public class CuaPrioritat {
         return cua.isEmpty();
     }
 
-    public int treurelementprioritari() {
-        int indice = 0;
+    public int treureElementPrioritari() {
+        int index = 0;
         int prioritat = 10;
-        for(int i = 0; i < cua.size(); i++) {
+
+        for (int i = 0; i < cua.size(); i++) {
             if (cua.get(i).getPrioritat() < prioritat) {
-                indice = i;
+                index = i;
                 prioritat = cua.get(i).getPrioritat();
             }
         }
-        return indice;
+
+        return index;
     }
 
-    public void eliminarelementprioritari(int indice) {
-        cua.remove(indice);
+    public void eliminarElementPrioritari(int index) {
+        cua.remove(index);
     }
 
-    public boolean comprovar(int size) {
-        //cua.sort(Comparator.comparingDouble(Configuracio::getPrioritat).reversed());  // Ordenar de mayor a menor precio
-        //System.out.println("Cola 0: " + cua.get(0).getPrioritat());
+    public boolean comprovar(int mida) {
         boolean flag = false;
-        for(int i = 0; i < cua.size(); i++) {
-            if (cua.get(i).getPrioritat() < size) {
+
+        for (int i = 0; i < cua.size(); i++) {
+            if (cua.get(i).getPrioritat() < mida) {
                 flag = true;
                 break;
             }
         }
+
         return flag;
     }
 
-    public void clear() {
+    public void netejar() {
         cua.clear();
     }
 }

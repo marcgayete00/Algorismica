@@ -1,27 +1,23 @@
 public class Sabata {
     private String nom;
-
-    private String nomcomplet;
+    private String nomComplet;
     private float preu;
-    private int min_talla;
-    private int max_talla;
+    private int minTalla;
+    private int maxTalla;
     private int pes;
     private float puntuacio;
-
     private float descompte = 0;
-
     private boolean descompteDuplicat;
     private boolean descompteNens;
     private boolean incrementPS;
     private boolean descomptePI;
 
-
-    public Sabata(String nom,String nomcomplet, float preu, int min_talla, int max_talla, int pes, float puntuacio, float descompte, boolean descompteDuplicat, boolean descompteNens, boolean incrementPS, boolean descomptePI) {
+    public Sabata(String nom, String nomComplet, float preu, int minTalla, int maxTalla, int pes, float puntuacio, float descompte, boolean descompteDuplicat, boolean descompteNens, boolean incrementPS, boolean descomptePI) {
         this.nom = nom;
-        this.nomcomplet = nomcomplet;
+        this.nomComplet = nomComplet;
         this.preu = preu;
-        this.min_talla = min_talla;
-        this.max_talla = max_talla;
+        this.minTalla = minTalla;
+        this.maxTalla = maxTalla;
         this.pes = pes;
         this.puntuacio = puntuacio;
         this.descompte = descompte;
@@ -36,19 +32,19 @@ public class Sabata {
     }
 
     public String getNomComplet() {
-        return nomcomplet;
+        return nomComplet;
     }
 
     public float getPreu() {
         return preu;
     }
 
-    public int getMin_talla() {
-        return min_talla;
+    public int getMinTalla() {
+        return minTalla;
     }
 
-    public int getMax_talla() {
-        return max_talla;
+    public int getMaxTalla() {
+        return maxTalla;
     }
 
     public int getPes() {
@@ -59,7 +55,6 @@ public class Sabata {
         return puntuacio;
     }
 
-
     public float getDescompte() {
         return descompte;
     }
@@ -68,8 +63,8 @@ public class Sabata {
         this.descompte = descompte;
     }
 
-    public void setPreu(float noupreu) {
-        this.preu = noupreu;
+    public void setPreu(float nouPreu) {
+        this.preu = nouPreu;
     }
 
     public boolean isDescompteDuplicat() {

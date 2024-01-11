@@ -20,6 +20,4 @@ public class TipusDescompte {
     public int getTipusDescompte() {
         return tipusDescompte;
     }
-
-
 }
