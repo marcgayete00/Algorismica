@@ -311,7 +311,7 @@ public class Main {
     private static void enviamentCaixesBacktracking(Sabata[] sabatesArray, int ordre, Configuracio configuracio) {
         if (ordre == sabatesArray.length) {
             calcularDescomptes(configuracio);
-            calcularPreuCaixa(sabatesArray,configuracio);
+            calcularPreuCaixa(sabatesArray, configuracio);
             reseteigDades(configuracio);
             return;
         }
