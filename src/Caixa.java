@@ -34,17 +34,6 @@ public class Caixa {
         this.descomptePI = false;
     }
 
-    /*public Caixa(Caixa caixa) {
-        this.Sabates = new ArrayList<Sabata>(caixa.Sabates);
-        this.numSabatesNens = caixa.numSabatesNens;
-        this.numSabatesPA = caixa.numSabatesPA;
-        this.numSabatesPB = caixa.numSabatesPB;
-        this.Pes = caixa.Pes;
-        this.Preu = caixa.Preu;
-    }*/
-
-
-
     public ArrayList<Sabata> getSabates() {
         return Sabates;
     }
