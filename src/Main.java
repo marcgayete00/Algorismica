@@ -15,7 +15,7 @@ public class Main {
 
     public static Sabata[] lecturaFitxer() {
         try {
-            File elMeuObjecte = new File("Datasets/datasetXXS.txt");
+            File elMeuObjecte = new File("Datasets/datasetXS.txt");
             Scanner elMeuLector = new Scanner(elMeuObjecte);
 
             nSabatesFitxer = Integer.parseInt(elMeuLector.nextLine());
@@ -387,7 +387,7 @@ public class Main {
                         }
                     }
                 } else {
-                    if (estimacio(llistaElements.get(i), sabatesArray) < maxim) {
+                    if (estimacio(new Configuracio(llistaElements.get(i)), sabatesArray) <= maxim) {
                         cua.afegir(llistaElements.get(i));
                     }
                 }
@@ -409,15 +409,19 @@ public class Main {
 
             // Contar zapatos restantes
             int sabatesRestants = 0;
+            int sabatesActuals = 0;
 
-            for (Sabata sabata : sabates) {
-                if (!configuracioActual.caixes.contains(sabata)) {
-                    sabatesRestants++;
+            for(int i = 0; i< configuracioActual.getCaixes().size(); i++) {
+                for(int j = 0; j<configuracioActual.getCaixes().get(i).getSabates().size(); j++){
+                    sabatesActuals++;
                 }
             }
-            int caixesNecessaries = (int) Math.floor((double) sabatesRestants / 6);
 
-            if (configuracioActual.getCaixes().get(configuracioActual.getCaixes().size() - 1).getPreu() > 800 && configuracioActual.getCaixes().get(configuracioActual.getCaixes().size() - 1).getSabates().size() >= 3) {
+            sabatesRestants = sabates.length - sabatesActuals;
+
+            int caixesNecessaries = (int) Math.ceil((double) sabatesRestants / 6);
+
+            if (configuracioActual.getCaixes().get(configuracioActual.getCaixes().size() - 1).getPreu() >= 800 && configuracioActual.getCaixes().get(configuracioActual.getCaixes().size() - 1).getSabates().size() >= 3) {
                 caixesNecessaries++;
             }
             reseteigDades(configuracioActual);

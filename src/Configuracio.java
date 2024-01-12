@@ -9,6 +9,11 @@ public class Configuracio {
         this.prioritat = prioritat;
     }
 
+    public Configuracio(Configuracio configuracio) {
+        this.caixes = configuracio.getCaixes();
+        this.prioritat = configuracio.getPrioritat();
+    }
+
     public ArrayList<Caixa> getCaixes() {
         return caixes;
     }
