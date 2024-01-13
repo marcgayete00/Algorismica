@@ -339,7 +339,7 @@ public class Main {
         configuracio.eliminarCaixa(configuracio.getCaixes().size() - 1);
     }
 
-    private static Configuracio enviamentCaixesBranchAndBound(Sabata[] sabatesArray, Configuracio configuracio, CuaPrioritat cua) {
+    private static void enviamentCaixesBranchAndBound(Sabata[] sabatesArray, Configuracio configuracio, CuaPrioritat cua) {
         cua.afegir(configuracio);
         ArrayList<Configuracio> llistaElements;
         int maxim = (int)Math.ceil(((double)sabatesArray.length / 6) * 2);
@@ -370,8 +370,6 @@ public class Main {
             }
             llistaElements.clear();
         }
-
-        return configuracioActual;
     }
 
     private static int estimacio(Configuracio configuracioActual, Sabata[] sabates) {
@@ -603,9 +601,11 @@ public class Main {
 
         for (int i = 0; i < sabatesLlista.size(); i++) {
             if (costInvetari1 <= costInvetari2) {
+                nIteracions++;
                 inventari1.add(sabatesLlista.get(i));
                 costInvetari1 += sabatesLlista.get(i).getPreu();
             } else {
+                nIteracions++;
                 inventari2.add(sabatesLlista.get(i));
                 costInvetari2 += sabatesLlista.get(i).getPreu();
             }
@@ -632,6 +632,7 @@ public class Main {
 
         for (int i = 0; i < sabatesLlista.size(); i++) {
             int indexInventari = obtindreMenorCostInventari(inventaris);
+            nIteracions++;
             inventaris.get(indexInventari).add(sabatesLlista.get(i));
         }
 
@@ -769,6 +770,8 @@ public class Main {
                             case 2:
                                 System.out.print("Has escollit l'algorisme greedy\n");
                                 divisioInventariGreedy(sabatesArray);
+                                System.out.println("Nombre d'iteracions: " + nIteracions);
+                                nIteracions = 0;
                                 break;
                             case 3:
                                 System.out.print("Has escollit l'algorisme de greedy 2\n");
@@ -776,6 +779,8 @@ public class Main {
                                 int numInvetaris = escanejador.nextInt();
                                 List<Sabata> sabatesLlista = Arrays.asList(sabatesArray);
                                 divisioInventariGreedy2(sabatesLlista, numInvetaris);
+                                System.out.println("Nombre d'iteracions: " + nIteracions);
+                                nIteracions = 0;
 
                                 break;
                             case 4:
