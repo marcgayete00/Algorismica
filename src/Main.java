@@ -9,8 +9,6 @@ public class Main {
     static int nSabatesFitxer = 0;
     static int caixesTotals = 1;
     static boolean esPrimera = false;
-
-    static int entrado = 0;
     static Configuracio configuracioOptima = new Configuracio(new ArrayList<Caixa>(),0);
 
     public static Sabata[] lecturaFitxer() {
@@ -60,7 +58,7 @@ public class Main {
         caixesTotals = 0;
 
         for (int i = 0; i < configuracio.getCaixes().size(); i++) {
-            System.out.println("Caixa " + i);
+            System.out.println("Caixa " + (i+1));
             caixesTotals++;
 
             for (int j = 0; j < configuracio.getCaixes().get(i).getSabates().size(); j++) {
@@ -73,19 +71,15 @@ public class Main {
     }
 
     private static void mostrarDadesInventari(ConfDivInv configuracioInv) {
-        System.out.println("----------------------");
-        System.out.println("Inventari 1: ");
+        System.out.println("Inventari 1: " + configuracioInv.getPreuInvetari1());
         for (int i = 0; i < configuracioInv.getInventari1().size(); i++) {
             System.out.println("Sabata " + configuracioInv.getInventari1().get(i).getNom() + " " + configuracioInv.getInventari1().get(i).getPreu());
         }
-        System.out.println("Preu Inventari 1: " + configuracioInv.getPreuInvetari1());
-
-        System.out.println("Inventari 2: ");
+        System.out.println("----------------------");
+        System.out.println("Inventari 2: " + configuracioInv.getPreuInvetari2());
         for(int i = 0; i < configuracioInv.getInventari2().size(); i++) {
             System.out.println("Sabata " + configuracioInv.getInventari2().get(i).getNom() + " " + configuracioInv.getInventari2().get(i).getPreu());
         }
-        System.out.println("Preu Inventari 2: " + configuracioInv.getPreuInvetari2());
-        System.out.println("----------------------");
     }
 
     private static void calcularDescomptes(Configuracio configuracio) {
@@ -354,26 +348,8 @@ public class Main {
         while (!cua.isEmpty()) {
             indiceprioritario = cua.treureElementPrioritari();
             copiaConfiguracioBB(indiceprioritario,configuracioActual);  //configuracioActual té les dades de la configuració amb major prioritat
-            /*System.out.println("ESCOGIDO ----------------------");
-            for (int i = 0;i< configuracioActual.getCaixes().size();i++){
-                System.out.println("Caixa " + i);
-                for (int j = 0;j< configuracioActual.getCaixes().get(i).getSabates().size();j++){
-                    System.out.println("Sabata " + configuracioActual.getCaixes().get(i).getSabates().get(j).getNom());
-                }
-                System.out.println("Preu " + configuracioActual.getCaixes().get(i).getPreu());
-            }*/
             cua.eliminarElementPrioritari(indiceprioritario);
             llistaElements = expandir(configuracioActual, sabatesArray); //Crear els fills d'aquella configuració
-            /*for (int i = 0;i< llistaElements.size();i++){
-                System.out.println("----------------------");
-                for (int j = 0;j< llistaElements.get(i).getCaixes().size();j++){
-                    System.out.println("Caixa " + j);
-                    for (int k = 0;k< llistaElements.get(i).getCaixes().get(j).getSabates().size();k++){
-                        System.out.println("Sabata " + llistaElements.get(i).getCaixes().get(j).getSabates().get(k).getNom());
-                    }
-                    System.out.println("Preu " + llistaElements.get(i).getCaixes().get(j).getPreu());
-                }
-            }*/
             for (int i = 0; i < llistaElements.size(); i++) {
                 if (configuracioCompleta(llistaElements.get(i),sabatesArray)) {
                     if (llistaElements.get(i).getCaixes().size() < maxim) {
@@ -392,8 +368,6 @@ public class Main {
                     }
                 }
             }
-
-            //System.out.println("Mida de la cua: " + cua.getCua().size());
             llistaElements.clear();
         }
 
@@ -426,9 +400,9 @@ public class Main {
             }
             reseteigDades(configuracioActual);
 
-            System.out.println("Sabates restants: " + sabatesRestants);
+            /*System.out.println("Sabates restants: " + sabatesRestants);
             System.out.println("Caixes necessàries: " + caixesNecessaries);
-            System.out.println("Estimació: " + (configuracioActual.getCaixes().size() + caixesNecessaries));
+            System.out.println("Estimació: " + (configuracioActual.getCaixes().size() + caixesNecessaries));*/
 
             return (configuracioActual.getCaixes().size() + caixesNecessaries);
         } else {
@@ -481,7 +455,6 @@ public class Main {
     private static ArrayList<Configuracio> expandir(Configuracio configuracioInicial, Sabata[] sabatesArray) {
         ArrayList<Configuracio> llistaElements = new ArrayList<>();
         int index = 0;
-        entrado++;
         if (configuracioInicial.getCaixes().size() != 0) {
             index = configuracioInicial.getCaixes().size() - 1;
         }
@@ -637,32 +610,38 @@ public class Main {
                 costInvetari2 += sabatesLlista.get(i).getPreu();
             }
         }
-
+        System.out.println("Inventari 1: " + costInvetari1);
         for (int i = 0; i < inventari1.size(); i++) {
             System.out.println("Sabata " + inventari1.get(i).getNom() + " " + inventari1.get(i).getPreu());
         }
-        System.out.println("Inventari 1: " + costInvetari1);
-
+        System.out.println("--------------------");
+        System.out.println("Inventari 2: " + costInvetari2);
         for (int i = 0; i < inventari2.size(); i++) {
             System.out.println("Sabata " + inventari2.get(i).getNom() + " " + inventari2.get(i).getPreu());
         }
-        System.out.println("Inventari 2: " + costInvetari2);
+
     }
 
-    private static List<List<Sabata>> divisioInventariGreedy2(List<Sabata> sabatesLlista, int numInvetaris){
+    private static void divisioInventariGreedy2(List<Sabata> sabatesLlista, int numInventaris){
         sabatesLlista.sort(Comparator.comparingDouble(Sabata::getPreu).reversed());
 
         List<List<Sabata>> inventaris = new ArrayList<>();
-        for (int i = 0; i < numInvetaris; i++) {
+        for (int i = 0; i < numInventaris; i++) {
             inventaris.add(new ArrayList<>());
         }
 
-        for (Sabata sabata : sabatesLlista) {
+        for (int i = 0; i < sabatesLlista.size(); i++) {
             int indexInventari = obtindreMenorCostInventari(inventaris);
-            inventaris.get(indexInventari).add(sabata);
+            inventaris.get(indexInventari).add(sabatesLlista.get(i));
         }
 
-        return inventaris;
+        for (int i = 0; i < inventaris.size(); i++) {
+            System.out.println("Inventari " + i + ": " + calcularCost(inventaris.get(i)));
+            for (int j = 0; j < inventaris.get(i).size(); j++) {
+                System.out.println("Sabata " + inventaris.get(i).get(j).getNom() + " " + inventaris.get(i).get(j).getPreu());
+            }
+            System.out.println("--------------------");
+        }
     }
 
     private static int obtindreMenorCostInventari(List<List<Sabata>> inventaris) {
@@ -683,8 +662,8 @@ public class Main {
     private static double calcularCost(List<Sabata> sabates) {
         int cost = 0;
 
-        for (Sabata sabata : sabates) {
-            cost += sabata.getPreu();
+        for (int i = 0; i < sabates.size(); i++) {
+            cost += sabates.get(i).getPreu();
         }
 
         return cost;
@@ -710,10 +689,10 @@ public class Main {
             switch (opcio) {
                 case 1:
                     while (opcio2 != 4) {
-                        System.out.print("---- Escolliu un algorisme ----\n");
+                        System.out.print("---- Escolliu un algorisme per la configuració òptima de caixes ----\n");
                         System.out.print("1. Força bruta\n");
                         System.out.print("2. Backtracking\n");
-                        System.out.print("3. Programació dinàmica\n");
+                        System.out.print("3. Branch and Bound\n");
                         System.out.print("4. Tornar\n");
 
                         opcio2 = escanejador.nextInt();
@@ -754,8 +733,6 @@ public class Main {
                                 Main.configuracioOptima = new Configuracio(new ArrayList<Caixa>(), 0);
                                 System.out.println("La configuració amb menys caixes té: " + caixesTotals + " caixes");
                                 System.out.println("Nombre d'iteracions: " + nIteracions);
-                                System.out.println("Entrado: " + entrado);
-
                                 nIteracions = 0;
                                 caixesTotals = 0;
                                 break;
@@ -770,7 +747,7 @@ public class Main {
                     System.out.print("Has escollit l'opció 2\n");
 
                     while (opcio3 != 4) {
-                        System.out.print("---- Escolliu un algorisme ----\n");
+                        System.out.print("---- Escolliu un algorisme per la divisió d'inventari----\n");
                         System.out.print("1. Força bruta\n");
                         System.out.print("2. Greedy\n");
                         System.out.print("3. Greedy2\n");
@@ -798,11 +775,7 @@ public class Main {
                                 System.out.println("Tria el nombre d'inventaris");
                                 int numInvetaris = escanejador.nextInt();
                                 List<Sabata> sabatesLlista = Arrays.asList(sabatesArray);
-                                List<List<Sabata>> inventaris = divisioInventariGreedy2(sabatesLlista, numInvetaris);
-
-                                for (int i = 0; i < inventaris.size(); i++) {
-                                    System.out.println("Inventari " + (i + 1) + ": " + calcularCost(inventaris.get(i)));
-                                }
+                                divisioInventariGreedy2(sabatesLlista, numInvetaris);
 
                                 break;
                             case 4:
