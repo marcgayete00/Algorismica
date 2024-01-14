@@ -344,11 +344,11 @@ public class Main {
         ArrayList<Configuracio> llistaElements;
         int maxim = (int)Math.ceil(((double)sabatesArray.length / 6) * 2);
         Configuracio configuracioActual = new Configuracio(new ArrayList<>(), 0);
-        int indiceprioritario = 0;
+        int indexPrioritari = 0;
         while (!cua.isEmpty()) {
-            indiceprioritario = cua.treureElementPrioritari();
-            copiaConfiguracioBB(indiceprioritario,configuracioActual);  //configuracioActual té les dades de la configuració amb major prioritat
-            cua.eliminarElementPrioritari(indiceprioritario);
+            indexPrioritari = cua.treureElementPrioritari();
+            copiaConfiguracioBB(indexPrioritari,configuracioActual);  //configuracioActual té les dades de la configuració amb major prioritat
+            cua.eliminarElementPrioritari(indexPrioritari);
             llistaElements = expandir(configuracioActual, sabatesArray); //Crear els fills d'aquella configuració
             for (int i = 0; i < llistaElements.size(); i++) {
                 if (configuracioCompleta(llistaElements.get(i),sabatesArray)) {
